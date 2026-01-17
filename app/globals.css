@@ -50,13 +50,4 @@ a {
   }
 }
 
-h1 {
-  color: var(--color-chaos);
-  text-align: center;
-  text-transform: uppercase;
-
-  a {
-    color: var(--color-chaos);
-  }
-}
 
