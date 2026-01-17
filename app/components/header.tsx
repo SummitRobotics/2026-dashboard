@@ -6,7 +6,7 @@ export default function Header() {
     const pathname = usePathname();
 
     const links = [
-        { name: 'Match Strategy', href: '/nextMatch' },
+        { name: 'Match Strategy', href: '/matchStrategy' },
         { name: 'Teams', href: '/teams' },
         { name: 'Alliance Builder', href: '/allianceBuilder' },
     ];
