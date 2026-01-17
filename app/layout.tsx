@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import Navbar from "@/app/components/nav"; 
+import Header from "@/app/components/header";
 export default function RootLayout({
   children,
 }: {
@@ -8,11 +8,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex"> 
-        {/* Navbar is here once. It stays mounted during navigation. */}
-        <Navbar /> 
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body>
+        {/* Header is here once. It stays mounted during app navigation. */}
+        <Header />
         {/* Only this part reloads when you change pages */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="">
           {children}
         </main>
       </body>
