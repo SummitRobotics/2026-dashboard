@@ -1,6 +1,9 @@
+import Link from "next/link";
+
 interface TeamData {
   teamNumber: number;
   epa: number;
+  autoEpa: number;
   opr: number;
 }
 
@@ -27,6 +30,7 @@ async function getCompData(eventKey: string): Promise<TeamData[]> {
     const combined: TeamData[] = statData.map((entry: any) => ({
       teamNumber: entry.team,
       epa: entry.epa?.breakdown?.total_points ?? 0,
+      autoEpa: entry.epa?.breakdown?.auto_points ?? 0,
       opr: oprs[`frc${entry.team}`] ?? 0
     }));
 
@@ -74,6 +78,11 @@ export default async function EventPage({
             </a>
           </th>
           <th className="p-3 border border-slate-800 text-left">
+            <Link href={getSortUrl('autoEpa')} className="flex items-center gap-1">
+                Auto EPA {sortKey === "autoEpa" ? (isAsc ? '▲' : '▼') : '↕'}
+            </Link>
+          </th>
+          <th className="p-3 border border-slate-800 text-left">
             <a href={getSortUrl('opr')} className="flex items-center gap-1">
               OPR {sortKey === 'opr' ? (isAsc ? '▲' : '▼') : '↕'}
             </a>
@@ -85,7 +94,8 @@ export default async function EventPage({
           <tr key={team.teamNumber}>
             <td className="p-3 border border-slate-800 font-bold">{team.teamNumber}</td>
             <td className="p-3 border border-slate-800 text-green-400 font-mono">{team.epa.toFixed(1)}</td>
-            <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.opr.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.autoEpa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-red-400 font-mono">{team.opr.toFixed(1)}</td>
           </tr>
         ))}
       </tbody>
