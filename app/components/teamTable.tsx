@@ -67,7 +67,7 @@ export default async function EventPage({
   });
 
   const getSortUrl = (key: string) => {
-    const newOrder = sortKey === key && !isAsc || key === 'rank' || key === "teamNumber" || key === 'teamName' ? 'asc' : 'desc';
+    const newOrder = sortKey === key ? (isAsc ? 'desc' : 'asc') : (key === 'teamName' || key === 'teamNumber' || key === 'rank' ? 'asc' : 'desc');
     return `?sort=${key}&order=${newOrder}`;
   };
 
