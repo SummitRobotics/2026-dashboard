@@ -4,6 +4,8 @@ interface TeamData {
   teamNumber: number;
   epa: number;
   autoEpa: number;
+  teleEpa: number;
+  endEpa: number;
   opr: number;
 }
 
@@ -31,6 +33,8 @@ async function getCompData(eventKey: string): Promise<TeamData[]> {
       teamNumber: entry.team,
       epa: entry.epa?.breakdown?.total_points ?? 0,
       autoEpa: entry.epa?.breakdown?.auto_points ?? 0,
+      teleEpa: entry.epa?.breakdown?.teleop_points ?? 0,
+      endEpa: entry.epa?.breakdown?.endgame_points ?? 0,
       opr: oprs[`frc${entry.team}`] ?? 0
     }));
 
@@ -83,6 +87,16 @@ export default async function EventPage({
             </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left">
+            <Link href={getSortUrl('teleEpa')} className="flex items-center gap-1">
+                Teleop EPA {sortKey === "teleEpa" ? (isAsc ? '▲' : '▼') : '↕'}
+            </Link>
+          </th>
+          <th className="p-3 border border-slate-800 text-left">
+            <Link href={getSortUrl('endEpa')} className="flex items-center gap-1">
+                Endgame EPA {sortKey === "endEpa" ? (isAsc ? '▲' : '▼') : '↕'}
+            </Link>
+          </th>
+          <th className="p-3 border border-slate-800 text-left">
             <Link href={getSortUrl('opr')} className="flex items-center gap-1">
               OPR {sortKey === 'opr' ? (isAsc ? '▲' : '▼') : '↕'}
             </Link>
@@ -93,9 +107,11 @@ export default async function EventPage({
         {sortedTeams.map((team) => (
           <tr key={team.teamNumber}>
             <td className="p-3 border border-slate-800 font-bold">{team.teamNumber}</td>
-            <td className="p-3 border border-slate-800 text-green-400 font-mono">{team.epa.toFixed(1)}</td>
-            <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.autoEpa.toFixed(1)}</td>
-            <td className="p-3 border border-slate-800 text-red-400 font-mono">{team.opr.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-purple-400 font-mono">{team.epa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-green-400 font-mono">{team.autoEpa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.teleEpa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-red-400 font-mono">{team.endEpa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-yellow-400 font-mono">{team.opr.toFixed(1)}</td>
           </tr>
         ))}
       </tbody>
