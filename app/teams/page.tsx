@@ -1,7 +1,9 @@
-export default function teams() {
+import EventPage from "@/app/components/teamTable";
+
+export default function teams({ searchParams }: { searchParams: any }) {
   return (
-    <div className="flex min-h-screen bg-zinc-50 font-sans dark:bg-black">
-      <p className="text-3xl">Teams</p>
-    </div>
+    <main>
+      <EventPage searchParams={searchParams} />
+    </main>
   );
 }
