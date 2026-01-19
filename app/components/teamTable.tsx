@@ -68,14 +68,14 @@ export default async function EventPage({
       <thead className="bg-slate-900 uppercase text-xs font-bold">
         <tr>
           <th className="p-3 border border-slate-800 text-left">
-            <a href={getSortUrl('teamNumber')} className=" flex items-center gap-1">
+            <Link href={getSortUrl('teamNumber')} className=" flex items-center gap-1">
               Team {sortKey === 'teamNumber' ? (isAsc ? '▲' : '▼') : '↕'}
-            </a>
+            </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left">
-            <a href={getSortUrl('epa')} className="flex items-center gap-1">
+            <Link href={getSortUrl('epa')} className="flex items-center gap-1">
               EPA {sortKey === 'epa' ? (isAsc ? '▲' : '▼') : '↕'}
-            </a>
+            </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left">
             <Link href={getSortUrl('autoEpa')} className="flex items-center gap-1">
@@ -83,9 +83,9 @@ export default async function EventPage({
             </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left">
-            <a href={getSortUrl('opr')} className="flex items-center gap-1">
+            <Link href={getSortUrl('opr')} className="flex items-center gap-1">
               OPR {sortKey === 'opr' ? (isAsc ? '▲' : '▼') : '↕'}
-            </a>
+            </Link>
           </th>
         </tr>
       </thead>
