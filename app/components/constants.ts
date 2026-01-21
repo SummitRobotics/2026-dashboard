@@ -1,0 +1,1 @@
+export const COMP_ID = '2025bcvi';

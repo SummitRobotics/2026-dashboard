@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
 import { fetchEventMatches, Match } from "@/app/utils/matchFetcher";
+import { COMP_ID } from '@/app/components/constants';
 
 export default function MatchStrategy() {
   const [matchList, setMatchList] = useState<Match[]>([]);
   const [selectedMatchNumber, setSelectedMatchNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  const EVENT_KEY = '2025bcvi';
+  const EVENT_KEY = COMP_ID;
 
   useEffect(() => {
     async function load() {

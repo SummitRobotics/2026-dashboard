@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { COMP_ID } from './constants';
 interface TeamData {
   teamNumber: number;
   teamName: string;
@@ -54,7 +54,7 @@ export default async function EventPage({
 }: {
   searchParams?: { sort?: string; order?: string };
 }) {
-  const teams = await getCompData('2025bcvi');
+  const teams = await getCompData(COMP_ID);
 
   const params = await searchParams || {};
   const sortKey = (params.sort || 'epa') as keyof TeamData;
