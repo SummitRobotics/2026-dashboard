@@ -44,6 +44,7 @@ async function getCompData(eventKey: string): Promise<TeamData[]> {
 
     return combined;
   } catch (err) {
+    console.log(err)
     return [];
   }
 }
@@ -80,7 +81,7 @@ export default async function EventPage({
               Team {sortKey === 'teamNumber' ? (isAsc ? '▲' : '▼') : '↕'}
             </Link>
           </th>
-          <th className="p-3 border border-slate-800 text-left">
+          <th className="p-3 border border-slate-800 text-left w-60 whitespace-nowrap overflow-x-auto">
             <Link href={getSortUrl('teamName')} className=" flex items-center gap-1">
               Team Name {sortKey === 'teamName' ? (isAsc ? '▲' : '▼') : '↕'}
             </Link>
@@ -121,7 +122,11 @@ export default async function EventPage({
         {sortedTeams.map((team) => (
           <tr key={team.teamNumber}>
             <td className="p-3 border border-slate-800 font-bold font-mono">{team.teamNumber}</td>
-            <td className="p-3 border border-slate-800 text-orange-400 font-mono">{team.teamName}</td>
+            <td className="p-3 border border-slate-800 text-orange-400 font-mono">
+              <div className="w-60 overflow-x-auto whitespace-nowrap scrollbar-hide">
+                {team.teamName}
+              </div>
+            </td>
             <td className="p-3 border border-slate-800 text-purple-400 font-mono">{team.epa.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-green-400 font-mono">{team.autoEpa.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.teleEpa.toFixed(1)}</td>

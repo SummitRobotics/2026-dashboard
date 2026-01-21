@@ -1,18 +1,6 @@
 'use client';
 import "./allianceInfo.css";
-
-type Alliance = {
-  color: string;
-  teams: number[];
-  OPR: number;
-  EPA: number;
-  epaSD: number;
-};
-
-type Match = {
-  matchNumber: number;
-  alliances: Alliance[];
-};
+import { Match } from "@/app/utils/matchFetcher";
 
 export default function AllianceInfo({ data }: { data: Match | null }) {
   if (!data) {
@@ -23,19 +11,19 @@ export default function AllianceInfo({ data }: { data: Match | null }) {
       </div>
     );
   }
-
-  data.alliances.sort((a, b) => a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0);
+  const sortedAlliances = [...data.alliances].sort((a, b) => 
+    a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
+  );
 
   return (
     <div className="alliance-info">
-      <h3>Alliance Information — Match {data.matchNumber}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-        {data.alliances.map((alliance) => (
-          <div key={alliance.color} className={`p-3 border rounded border-${alliance.color}-500`}>
+        {sortedAlliances.map((alliance) => (
+          <div key={alliance.color} className={`p-3 border rounded border-white`}>
             <h4 className="font-semibold">{alliance.color.toUpperCase()} Alliance</h4>
             <p>Teams: {alliance.teams.join(', ')}</p>
             <p>OPR: {alliance.OPR}</p>
-            <p>EPA: {alliance.EPA} (±{alliance.epaSD})</p>
+            <p>EPA: {alliance.EPA} (SD: {alliance.epaSD})</p>
           </div>
         ))}
       </div>
