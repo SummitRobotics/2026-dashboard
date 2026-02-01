@@ -28,13 +28,12 @@ export default function MatchStrategy() {
 
   return (
     <div className="">
-      <h2 className="text-center">Match Strategy</h2>
-
       {isLoading ? (
         <div className="text-center mt-4">Loading Schedule...</div>
       ) : (
         <>
           <nav className="flex justify-center gap-4 my-4">
+            <label htmlFor="matchSelector" className="self-center">Select Match:</label>
             <select
               id="matchSelector"
               value={selectedMatchNumber}

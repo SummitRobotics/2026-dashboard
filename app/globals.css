@@ -1,53 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "GameCube";
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/GameCube.ttf") format("truetype");
 }
 
 @theme {
-  /* Colors */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-chaos: oklch(0.7174 0.242 142.13);
+  /* Chaos Theme Colors */
+  --color-chaos-50: #e8ffe5;
+  --color-chaos-100: #d1ffcc;
+  --color-chaos-200: #a3ff99;
+  --color-chaos-300: #75ff66;
+  --color-chaos-400: #47ff33;
+  --color-chaos-500: #1aff00;
+  --color-chaos-600: #14C600; /* Default Chaos Green */
+  --color-chaos-700: #0f9900;
+  --color-chaos-800: #008800; /* Summit Green*/
+  --color-chaos-900: #053300;
+  --color-chaos-950: #042400;
 
-  --color-chaos-50: oklch(0.9835 0.0226 135.62);
-  --color-chaos-100: oklch(0.9644 0.0507 137.75);
-  --color-chaos-200: oklch(0.9307 0.0947 138.17);
-  --color-chaos-300: oklch(0.8823 0.1508 139.53);
-  --color-chaos-400: oklch(0.8215 0.190652 140.3162);
-  --color-chaos-500: oklch(0.7423 0.1961 140.67);
-  --color-chaos-600: oklch(0.4 0.242 142.13);
-  --color-chaos-700: oklch(0.3 0.242 142.13);
-  --color-chaos-800: oklch(0.2 0.242 142.13);
-  --color-chaos-900: oklch(0.1 0.242 142.13);
-  --color-chaos-950: oklch(0.05 0.242 142.13);
+  --color-mild-chaos-50: #f5faeb;
+  --color-mild-chaos-100: #ebf4d7;
+  --color-mild-chaos-200: #d8eaae;
+  --color-mild-chaos-300: #c4df86;
+  --color-mild-chaos-400: #b1d45e;
+  --color-mild-chaos-500: #9dc936;
+  --color-mild-chaos-600: #7ea12b; /* Default Mild Chaos */
+  --color-mild-chaos-700: #5e7920;
+  --color-mild-chaos-800: #3f5115;
+  --color-mild-chaos-900: #1f280b;
+  --color-mild-chaos-950: #161c07;
+
+  --color-summit-grey-50: #f2f2f3;
+  --color-summit-grey-100: #e5e5e6;
+  --color-summit-grey-200: #caccce;
+  --color-summit-grey-300: #A7A9AC; /* Default Summit Grey */
+  --color-summit-grey-400: #96989c;
+  --color-summit-grey-500: #7c7f83;
+  --color-summit-grey-600: #636569;
+  --color-summit-grey-700: #4a4c4f;
+  --color-summit-grey-800: #313335;
+  --color-summit-grey-900: #19191a;
+  --color-summit-grey-950: #111212;
+
+  --color-cream-50: oklch(97.13% 0.014 84.58);
+  --color-cream-100: oklch(94.38% 0.029 89.57);
+  --color-cream-200: oklch(88.78% 0.058 89.65);
+  --color-cream-300: oklch(83.03% 0.085 88.48);
+  --color-cream-400: oklch(77.56% 0.109 88.07);
+  --color-cream-500: oklch(72.20% 0.127 86.56);
+  --color-cream-600: oklch(61.27% 0.107 86.54);
+  --color-cream-700: oklch(49.83% 0.085 86.48);
+  --color-cream-800: oklch(37.93% 0.062 88.02);
+  --color-cream-900: oklch(24.73% 0.036 88.74);
+  --color-cream-950: oklch(20.34% 0.027 87.01);
+
+  --color-blue: #215E9B;
+  --color-red: #AB1F34;
+  --color-chaos: var(--color-chaos-600);
+  --color-summit-grey: var(--color-summit-grey-300);
+
+
+  --color-background: var(--color-summit-grey-300);
+  --color-foreground: var(--color-summit-grey-900);
+
 
 
   /* Typography */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: "Roboto", sans-serif;
+  --font-chaos: "GameCube", "Roboto", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-a {
-  color: var(--color-foreground);
-
-  &:hover {
-    color: var(--color-chaos);
-  }
+  font-family: var(--font-display);
 }
 
 
