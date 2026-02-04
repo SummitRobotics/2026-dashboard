@@ -1,15 +1,11 @@
 @import 'tailwindcss';
 
 .alliance-info {
-  .blue {
-    h3 {
-      color: var(--color-blue-dark);
-    }
+  .blue-alliance {
+    background-image: linear-gradient(to top, var(--color-blue), var(--color-blue-dark));
   }
 
-  .red {
-    h3 {
-      color: var(--color-red-dark);
-    }
+  .red-alliance {
+    background-image: linear-gradient(to top, var(--color-red), var(--color-red-dark));
   }
 }

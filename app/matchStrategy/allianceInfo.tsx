@@ -15,23 +15,15 @@ export default function AllianceInfo({ data }: { data: Match | null }) {
     a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
   );
 
-  const allianceColorsClasses = {
-    red: {
-      container: 'from-red to-red-dark',
-    },
-    blue: {
-      container: 'from-blue to-blue-dark',
-    },
-  };
 
   return (
     <div className="alliance-info">
       <div className="grid grid-cols-2 gap-4 mt-2 p-4">
         {sortedAlliances.map((alliance) => (
-          <div key={alliance.color} className={`p-3 border rounded-lg bg-linear-to-t ${allianceColorsClasses[alliance.color].container}`}>
+          <div key={alliance.color} className={`p-3 border rounded-lg bg-linear-to-t ${alliance.color}-alliance`}>
             <h3 className="text-xl">{alliance.color.toUpperCase()} Alliance</h3>
 
-            <div className={``}>
+            <div>
               <p>Teams: {alliance.teams.join(', ')}</p>
               <p>OPR: {alliance.OPR}</p>
               <p>EPA: {alliance.EPA} (SD: {alliance.epaSD})</p>
