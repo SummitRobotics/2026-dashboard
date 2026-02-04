@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+.alliance-info {
+  .blue {
+    h3 {
+      color: var(--color-blue-dark);
+    }
+  }
+
+  .red {
+    h3 {
+      color: var(--color-red-dark);
+    }
+  }
+}

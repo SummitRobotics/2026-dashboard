@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -58,8 +58,10 @@
   --color-cream-900: oklch(24.73% 0.036 88.74);
   --color-cream-950: oklch(20.34% 0.027 87.01);
 
-  --color-blue: #215E9B;
-  --color-red: #AB1F34;
+  --color-blue: #2466A8;
+  --color-blue-dark: #123354;
+  --color-red: #AC2035;
+  --color-red-dark: #56101A;
   --color-chaos: var(--color-chaos-600);
   --color-summit-grey: var(--color-summit-grey-300);
 
@@ -77,6 +79,7 @@
 
 body {
   font-family: var(--font-display);
+  font-weight: lighter;
 }
 
 
