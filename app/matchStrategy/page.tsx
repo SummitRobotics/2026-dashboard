@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
-import { fetchEventMatches, Match } from "@/app/utils/matchFetcher";
+import { fetchEventMatches } from "@/app/utils/matchFetcher";
+import { Match } from "@/app/utils/interfaceSpecs";
 import { COMP_ID } from '@/app/components/constants';
 
 export default function MatchStrategy() {

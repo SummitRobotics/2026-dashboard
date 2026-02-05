@@ -1,6 +1,6 @@
 'use client';
 import "./allianceInfo.css";
-import { Match } from "@/app/utils/matchFetcher";
+import { Match } from "@/app/utils/interfaceSpecs";
 
 export default function AllianceInfo({ data }: { data: Match | null }) {
   if (!data) {
@@ -24,25 +24,43 @@ export default function AllianceInfo({ data }: { data: Match | null }) {
             <h3 className="text-xl">{alliance.color.toUpperCase()} Alliance</h3>
 
             <div>
-              <p>Teams: {alliance.teams.join(', ')}</p>
               <p>OPR: {alliance.OPR}</p>
               <p>EPA: {alliance.EPA} (SD: {alliance.epaSD})</p>
+              <p className="text-center border-b-2">Teams</p>
+              <div className="grid grid-cols-4 gap-2 mt-2 p-4 m-2 text-center">
+                <div></div>
+                {alliance.teams.map((team) => (
+                  <div key={`team-${team}`}>{team}</div>
+                ))}
+              </div>
             </div>
 
-            <div className={`p-3 border rounded-lg m-2`}>
+            <div className="p-3 border rounded-lg m-2">
               <h4 className="text-lg">Auto</h4>
-              <div className="grid grid-cols-4 gap-2 mt-2 p-4">
+              <div className="grid grid-cols-4 gap-2 mt-2 p-4 text-center">
+                <div className="font-bold text-right">Climb</div>
+                <div>Team 1</div>
+                <div>Team 2</div>
+                <div>Team 3</div>
+              </div>
+            </div>
+            <div className="p-3 border rounded-lg m-2">
+              <h4 className="text-lg">Teleop</h4>
+              <div className="grid grid-cols-4 gap-2 mt-2 p-4 text-center">
                 <div className="font-bold">Climb</div>
                 <div>Team 1</div>
                 <div>Team 2</div>
                 <div>Team 3</div>
               </div>
             </div>
-            <div className={`p-3 border rounded-lg m-2`}>
-              <h4 className="text-lg">Teleop</h4>
-            </div>
-            <div className={`p-3 border rounded-lg m-2`}>
+            <div className="p-3 border rounded-lg m-2">
               <h4 className="text-lg">Endgame</h4>
+              <div className="grid grid-cols-4 gap-2 mt-2 p-4 text-center">
+                <div className="font-bold">Climb</div>
+                <div>Team 1</div>
+                <div>Team 2</div>
+                <div>Team 3</div>
+              </div>
             </div>
           </div>
         ))}
