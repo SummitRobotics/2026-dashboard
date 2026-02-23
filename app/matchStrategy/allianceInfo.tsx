@@ -16,6 +16,7 @@ export default function AllianceInfo({ data }: { data: Match | null }) {
   );
 
 
+
   return (
     <div className="alliance-info">
       <div className="grid grid-cols-2 gap-4 mt-2 p-4">
