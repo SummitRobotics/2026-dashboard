@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
 import { fetchEventMatches } from "@/app/utils/matchFetcher";
-import { fetchScoutingData } from "@/app/utils/scoutingDataFetcher";
+import { fetchPitScoutingData } from "@/app/utils/scoutingDataFetcher";
 import { Match } from "@/app/utils/interfaceSpecs";
 import { COMP_ID } from '@/app/components/constants';
 
@@ -21,7 +21,7 @@ export default function MatchStrategy() {
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
         const teams = data[0].alliances.flatMap((a) => a.teams);
-        await fetchScoutingData(teams)
+        await fetchPitScoutingData(teams)
         .then(response => {
           response.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
