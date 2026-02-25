@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./allianceInfo.css";
 import { Match, PitScoutingData } from "@/app/utils/interfaceSpecs";
 import TeamModal from "../components/teamModal";
+import { fetchMatchScoutingData } from "../utils/scoutingDataFetcher";
 
 export default function AllianceInfo({ matchData, pitScoutingData }: { matchData: Match | null, pitScoutingData: Record<string, PitScoutingData>}) {
   const [activeTeam, setActiveTeam] = useState<PitScoutingData>({});
@@ -19,8 +20,6 @@ export default function AllianceInfo({ matchData, pitScoutingData }: { matchData
   const sortedAlliances = [...matchData.alliances].sort((a, b) =>
     a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
   );
-
-
 
   return (
     <div className="alliance-info">
