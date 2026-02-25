@@ -1,6 +1,7 @@
 'use client';
 import "./allianceInfo.css";
 import { Match } from "@/app/utils/interfaceSpecs";
+import { fetchMatchScoutingData } from "../utils/scoutingDataFetcher";
 
 export default function AllianceInfo({ data }: { data: Match | null }) {
   if (!data) {
@@ -14,8 +15,6 @@ export default function AllianceInfo({ data }: { data: Match | null }) {
   const sortedAlliances = [...data.alliances].sort((a, b) =>
     a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
   );
-
-
 
   return (
     <div className="alliance-info">

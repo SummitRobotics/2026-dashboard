@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { COMP_ID } from './constants';
 import getCompData from './getComp';
+import { fetchMatchScoutingData } from "../utils/scoutingDataFetcher";
 interface TeamData {
   teamNumber: number;
   teamName: string;
@@ -71,6 +72,11 @@ export default async function EventPage({
           <th className="p-3 border border-slate-800 text-left w-px whitespace-nowrap">
             <Link href={getSortUrl('opr')} className="flex items-center gap-1">
               OPR {sortKey === 'opr' ? (isAsc ? '▲' : '▼') : '↕'}
+            </Link>
+          </th>
+          <th className="p-3 border border-slate-800 text-left w-px whitespace-nowrap">
+            <Link href={getSortUrl('rank')} className="flex items-center gap-1">
+              Rank {sortKey === 'rank' ? (isAsc ? '▲' : '▼') : '↕'}
             </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left w-px whitespace-nowrap">
