@@ -58,10 +58,12 @@
   --color-cream-900: oklch(24.73% 0.036 88.74);
   --color-cream-950: oklch(20.34% 0.027 87.01);
 
-  --color-blue: #2466A8;
-  --color-blue-dark: #123354;
-  --color-red: #AC2035;
-  --color-red-dark: #56101A;
+  --color-blue: oklch(50.29% 0.124 251.76);
+  --color-blue-light: oklch(83.22% 0.058 248.53);
+  --color-blue-dark: oklch(31.52% 0.071 251.09);
+  --color-red: oklch(39.70% 0.139 18.61);
+  --color-red-light: oklch(80.40% 0.083 9.66);
+  --color-red-dark: oklch(30.20% 0.101 18.11);
   --color-chaos: var(--color-chaos-600);
   --color-summit-grey: var(--color-summit-grey-300);
 

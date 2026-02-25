@@ -3,29 +3,34 @@ import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
 import { fetchEventMatches } from "@/app/utils/matchFetcher";
 import { fetchPitScoutingData } from "@/app/utils/scoutingDataFetcher";
-import { Match } from "@/app/utils/interfaceSpecs";
+import { Match, PitScoutingData } from "@/app/utils/interfaceSpecs";
 import { COMP_ID } from '@/app/components/constants';
 
 export default function MatchStrategy() {
   const [matchList, setMatchList] = useState<Match[]>([]);
   const [selectedMatchNumber, setSelectedMatchNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [pitScoutingData, setPitScoutingData] = useState<Record<string, PitScoutingData> | null>(null);
 
-  const EVENT_KEY = COMP_ID;
 
   useEffect(() => {
     async function loadMatchData() {
       setIsLoading(true);
-      const data = await fetchEventMatches(EVENT_KEY);
+      const data = await fetchEventMatches(COMP_ID);
       setMatchList(data);
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
         const teams = data[0].alliances.flatMap((a) => a.teams);
+        console.log(data[0].alliances);
         await fetchPitScoutingData(teams)
         .then(response => {
-          response.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
-          });
+          return response.docs.reduce((acc, doc) => {
+            acc[doc.id] = doc.data();
+            return acc;
+          }, {} as Record<string, PitScoutingData>);
+        })
+        .then(data => {
+          setPitScoutingData(data);
         });
       }
       setIsLoading(false);
@@ -59,7 +64,7 @@ export default function MatchStrategy() {
           </nav>
 
           <div>
-            <AllianceInfo data={selectedMatch} />
+            <AllianceInfo matchData={selectedMatch} pitScoutingData={pitScoutingData} />
           </div>
         </>
       )}
