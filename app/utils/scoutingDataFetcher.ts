@@ -3,56 +3,56 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 interface DashboardScoutingData {
   teamID: number;
-  on_field: number;
+  on_field: boolean;
   start_position: {
-    middle: number;
-    right: number;
-    left: number;
+    middle: boolean;
+    right: boolean;
+    left: boolean;
   };
   rank_points: number;
   teleop: {
     fuel_score: number;
-    snowblow_neutral1: number;
-    snowblow_neutral2: number;
-    snowblow_alliance: number;
-    out_of_bounds: number;
-    move_shoot: number;
-    bump: number;
-    trench: number;
-    driver_skill: number;
-    defense: number;
+    snowblow_neutral1: boolean;
+    snowblow_neutral2: boolean;
+    snowblow_alliance: boolean;
+    out_of_bounds: boolean;
+    move_shoot: boolean;
+    bump: boolean;
+    trench: boolean;
+    driver_skill: boolean;
+    defense: boolean;
     speed: number;
   };
   endgame: {
     fuel_score: number;
     climb_level: {
-      one: number;
-      two: number;
-      three: number;
+      one: boolean;
+      two: boolean;
+      three: boolean;
     };
     climb_location: {
-      middle: number;
-      right: number;
-      left: number;
+      middle: boolean;
+      right: boolean;
+      left: boolean;
     };
   };
   assessment: {
-    died: number;
-    tipped: number;
-    fuel_spill: number;
-    stuck_fuel: number;
-    stuck_bump: number;
+    died: boolean;
+    tipped: boolean;
+    fuel_spill: boolean;
+    stuck_fuel: boolean;
+    stuck_bump: boolean;
   };
   auto: {
-    moved: number;
-    fuel_depot: number;
-    fuel_outpost: number;
-    fuel_neutral: number;
-    climb: number;
+    moved: boolean;
+    fuel_depot: boolean;
+    fuel_outpost: boolean;
+    fuel_neutral: boolean;
+    climb: boolean;
     climb_location: {
-      middle: number;
-      right: number;
-      left: number;
+      middle: boolean;
+      right: boolean;
+      left: boolean;
     };    
     fuel_score: number;
   };
@@ -130,8 +130,8 @@ function calcAvg(value: number, total: number): number {
 
 function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamData {
   const count = matches.length;
-  const sum = (fn: (m: DashboardScoutingData) => number) =>
-    matches.reduce((acc, m) => acc + fn(m), 0);
+  const sum = (fn: (m: DashboardScoutingData) => number | boolean) =>
+    matches.reduce((acc, m) => acc + (fn(m) ? 1 : 0), 0);
   return {
     teamID: matches[0].teamID,
     matches_played: count,
