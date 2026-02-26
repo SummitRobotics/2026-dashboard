@@ -1,11 +1,8 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./allianceInfo.css";
 import { Match, PitScoutingData, ProcessedTeamData, TeamDataLabels } from "@/app/utils/interfaceSpecs";
 import TeamModal from "../components/teamModal";
-import { fetchMatchScoutingData } from "../utils/scoutingDataFetcher";
-import { match } from "assert";
-
 
 const labels = {
   teamID: 'Team Number',
@@ -46,7 +43,7 @@ const labels = {
   }
 } as TeamDataLabels;
 
-export default function AllianceInfo({ matchData, pitScoutingData, matchScoutingData }: { matchData: Match | null, pitScoutingData: Record<string, PitScoutingData>, matchScoutingData: Record<string, ProcessedTeamData> | null}) {
+export default function AllianceInfo({ matchData, pitScoutingData, matchScoutingData }: { matchData: Match | null, pitScoutingData: Record<string, PitScoutingData> | null, matchScoutingData: Record<string, ProcessedTeamData> | null}) {
   const [activeTeam, setActiveTeam] = useState<PitScoutingData>({});
 
 
@@ -80,7 +77,10 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                   <h4 className="text-lg font-bold text-center col-start-2 col-span-3">Teams</h4>
                   <div>{/* Needed for grid alignment */}</div>
                   {alliance.teams.map((team) => (
-                    <div key={`team-${team}`} onClick={() => setActiveTeam(pitScoutingData[team])}>
+                    <div key={`team-${team}`} onClick={() => {
+                      if(!pitScoutingData) return;
+                      setActiveTeam(pitScoutingData![team]);
+                    }}>
                       <strong className="font-bold">{team}</strong><br />
                       Matches: {matchScoutingData![team].matches_played}
                     </div>
@@ -164,7 +164,7 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
           );
       })}
       </div>
-      <TeamModal isOpen={Object.keys(activeTeam).length !== 0} onCancel={() => setActiveTeam({})} onConfirm={() => {}} teamData={activeTeam} />
+      <TeamModal isOpen={activeTeam && Object.keys(activeTeam).length !== 0} onCancel={() => setActiveTeam({})} onConfirm={() => {}} teamData={activeTeam} />
     </div>
   );
 }
