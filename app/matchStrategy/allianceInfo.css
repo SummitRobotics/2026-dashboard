@@ -9,12 +9,20 @@
     .alliance {
       background-image: linear-gradient(to top left, var(--color-black), var(--color-blue-dark));
 
-      .teams {
+      .alliance-stats {
         border-bottom: 2px solid var(--color-blue);
       }
 
       .info {
-        border: 1px solid var(--color-blue);
+        border: 1px solid var(--color-blue-dark);
+      }
+
+      .stat {
+        border-bottom: 1px solid var(--color-blue-dark);
+
+        &:last-child {
+          border-bottom: none;
+        }
       }
     }
   }
@@ -27,12 +35,20 @@
     .alliance {
       background-image: linear-gradient(to top left, var(--color-black) 30%, var(--color-red-dark));
 
-      .teams {
-        border-bottom: 2px solid var(--color-red);
+      .alliance-stats {
+        border-bottom: 2px solid var(--color-red-dark);
       }
 
       .info {
         border: 1px solid var(--color-red);
+      }
+
+      .stat {
+        border-bottom: 1px solid var(--color-red-dark);
+
+        &:last-child {
+          border-bottom: none;
+        }
       }
     }
   }

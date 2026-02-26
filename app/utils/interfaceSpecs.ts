@@ -103,59 +103,58 @@ export interface PitScoutingData {
   error?: string;
 }
 
-export
-interface DashboardScoutingData {
+export interface DashboardScoutingData {
   teamID: number;
-  on_field: number;
+  on_field: boolean;
   start_position: {
-    middle: number;
-    right: number;
-    left: number;
+    middle: boolean;
+    right: boolean;
+    left: boolean;
   };
   rank_points: number;
   teleop: {
     fuel_score: number;
-    snowblow_neutral1: number;
-    snowblow_neutral2: number;
-    snowblow_alliance: number;
-    out_of_bounds: number;
-    move_shoot: number;
-    bump: number;
-    trench: number;
-    driver_skill: number;
-    defense: number;
+    snowblow_neutral1: boolean;
+    snowblow_neutral2: boolean;
+    snowblow_alliance: boolean;
+    out_of_bounds: boolean;
+    move_shoot: boolean;
+    bump: boolean;
+    trench: boolean;
+    driver_skill: boolean;
+    defense: boolean;
     speed: number;
   };
   endgame: {
     fuel_score: number;
     climb_level: {
-      one: number;
-      two: number;
-      three: number;
+      one: boolean;
+      two: boolean;
+      three: boolean;
     };
     climb_location: {
-      middle: number;
-      right: number;
-      left: number;
+      middle: boolean;
+      right: boolean;
+      left: boolean;
     };
   };
   assessment: {
-    died: number;
-    tipped: number;
-    fuel_spill: number;
-    stuck_fuel: number;
-    stuck_bump: number;
+    died: boolean;
+    tipped: boolean;
+    fuel_spill: boolean;
+    stuck_fuel: boolean;
+    stuck_bump: boolean;
   };
   auto: {
-    moved: number;
-    fuel_depot: number;
-    fuel_outpost: number;
-    fuel_neutral: number;
-    climb: number;
+    moved: boolean;
+    fuel_depot: boolean;
+    fuel_outpost: boolean;
+    fuel_neutral: boolean;
+    climb: boolean;
     climb_location: {
-      middle: number;
-      right: number;
-      left: number;
+      middle: boolean;
+      right: boolean;
+      left: boolean;
     };
     fuel_score: number;
   };
@@ -168,7 +167,7 @@ export interface ProcessedTeamData {
   start_position: string; // "X% L, Y% M, Z% R"
   rank_points: number; // average
   teleop: {
-    fuel_score: number; // average
+    // fuel_score: number; // average
     snowblow_neutral1: number;
     snowblow_neutral2: number;
     snowblow_alliance: number;
@@ -181,7 +180,7 @@ export interface ProcessedTeamData {
     speed: number; // average
   };
   endgame: {
-    fuel_score: number; // average
+    // fuel_score: number; // average
     climb_level: string; // "X% 1, Y% 2, Z% 3"
     // climb_score: number;
     climb_location: string; // "X% L, Y% M, Z% R"
@@ -200,6 +199,51 @@ export interface ProcessedTeamData {
     fuel_neutral: number;
     climb_score: number;
     climb_location: string; // "X% L, Y% M, Z% R"
-    fuel_score: number; // average
+    // fuel_score: number; // average
   };
+  [key: string]: string | number | Record<string, string | number | boolean | string[]>;
+}
+
+export interface TeamDataLabels {
+  teamID: string;
+  matches_played: string;
+  on_field: string;
+  rank_points: string;
+  start_position: string;
+  teleop: {
+    snowblow_neutral1: string;
+    snowblow_neutral2: string;
+    snowblow_alliance: string;
+    out_of_bounds: string;
+    move_shoot: string;
+    bump: string;
+    trench: string;
+    driver_skill: string;
+    defense: string;
+    speed: string;
+    [key: string]: string | number;
+  },
+  endgame: {
+    climb_level: string;
+    climb_location: string;
+    [key: string]: string | number;
+  },
+  assessment: {
+    died: string;
+    tipped: string;
+    fuel_spill: string;
+    stuck_fuel: string;
+    stuck_bump: string;
+    [key: string]: string | number;
+  },
+  auto: {
+    moved: string;
+    fuel_depot: string;
+    fuel_outpost: string;
+    fuel_neutral: string;
+    climb_score: string;
+    climb_location: string;
+    [key: string]: string | number;
+  },
+  [key: string]: string | number | Record<string, string | number | boolean | string[]>;
 }

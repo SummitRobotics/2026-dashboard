@@ -31,7 +31,6 @@ export default function MatchStrategy() {
         })
         .then(data => {
           setMatchScoutingData(data);
-          console.log("Match Scouting Data:", data);
         });
 
         await fetchPitScoutingData(teams)
