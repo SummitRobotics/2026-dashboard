@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
 import { fetchEventMatches } from "@/app/utils/matchFetcher";
-import { fetchPitScoutingData } from "@/app/utils/scoutingDataFetcher";
-import { Match, PitScoutingData } from "@/app/utils/interfaceSpecs";
+import { fetchPitScoutingData, fetchMatchScoutingData } from "@/app/utils/scoutingDataFetcher";
+import { Match, PitScoutingData, ProcessedTeamData } from "@/app/utils/interfaceSpecs";
 import { COMP_ID } from '@/app/components/constants';
 
 export default function MatchStrategy() {
@@ -11,7 +11,7 @@ export default function MatchStrategy() {
   const [selectedMatchNumber, setSelectedMatchNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
   const [pitScoutingData, setPitScoutingData] = useState<Record<string, PitScoutingData> | null>(null);
-
+  const [matchScoutingData, setMatchScoutingData] = useState<Record<string, ProcessedTeamData> | null>(null);
 
   useEffect(() => {
     async function loadMatchData() {
@@ -21,7 +21,19 @@ export default function MatchStrategy() {
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
         const teams = data[0].alliances.flatMap((a) => a.teams);
-        console.log(data[0].alliances);
+
+        await fetchMatchScoutingData(teams)
+        .then(response => {
+          return response.reduce((acc, data) => {
+            acc[data.teamID] = data;
+            return acc;
+          }, {} as Record<string, ProcessedTeamData>);
+        })
+        .then(data => {
+          setMatchScoutingData(data);
+          console.log("Match Scouting Data:", data);
+        });
+
         await fetchPitScoutingData(teams)
         .then(response => {
           return response.docs.reduce((acc, doc) => {
@@ -64,7 +76,7 @@ export default function MatchStrategy() {
           </nav>
 
           <div>
-            <AllianceInfo matchData={selectedMatch} pitScoutingData={pitScoutingData} />
+            <AllianceInfo matchData={selectedMatch} pitScoutingData={pitScoutingData} matchScoutingData={matchScoutingData} />
           </div>
         </>
       )}

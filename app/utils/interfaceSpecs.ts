@@ -102,3 +102,104 @@ export interface PitScoutingData {
   teamName?: string;
   error?: string;
 }
+
+export
+interface DashboardScoutingData {
+  teamID: number;
+  on_field: number;
+  start_position: {
+    middle: number;
+    right: number;
+    left: number;
+  };
+  rank_points: number;
+  teleop: {
+    fuel_score: number;
+    snowblow_neutral1: number;
+    snowblow_neutral2: number;
+    snowblow_alliance: number;
+    out_of_bounds: number;
+    move_shoot: number;
+    bump: number;
+    trench: number;
+    driver_skill: number;
+    defense: number;
+    speed: number;
+  };
+  endgame: {
+    fuel_score: number;
+    climb_level: {
+      one: number;
+      two: number;
+      three: number;
+    };
+    climb_location: {
+      middle: number;
+      right: number;
+      left: number;
+    };
+  };
+  assessment: {
+    died: number;
+    tipped: number;
+    fuel_spill: number;
+    stuck_fuel: number;
+    stuck_bump: number;
+  };
+  auto: {
+    moved: number;
+    fuel_depot: number;
+    fuel_outpost: number;
+    fuel_neutral: number;
+    climb: number;
+    climb_location: {
+      middle: number;
+      right: number;
+      left: number;
+    };
+    fuel_score: number;
+  };
+}
+
+export interface ProcessedTeamData {
+  teamID: number;
+  matches_played: number;
+  on_field: number; // percentage
+  start_position: string; // "X% L, Y% M, Z% R"
+  rank_points: number; // average
+  teleop: {
+    fuel_score: number; // average
+    snowblow_neutral1: number;
+    snowblow_neutral2: number;
+    snowblow_alliance: number;
+    out_of_bounds: number;
+    move_shoot: number;
+    bump: number;
+    trench: number;
+    driver_skill: number; // average
+    defense: number; // average
+    speed: number; // average
+  };
+  endgame: {
+    fuel_score: number; // average
+    climb_level: string; // "X% 1, Y% 2, Z% 3"
+    // climb_score: number;
+    climb_location: string; // "X% L, Y% M, Z% R"
+  };
+  assessment: {
+    died: number;
+    tipped: number;
+    fuel_spill: number;
+    stuck_fuel: number;
+    stuck_bump: number;
+  };
+  auto: {
+    moved: number;
+    fuel_depot: number;
+    fuel_outpost: number;
+    fuel_neutral: number;
+    climb_score: number;
+    climb_location: string; // "X% L, Y% M, Z% R"
+    fuel_score: number; // average
+  };
+}
