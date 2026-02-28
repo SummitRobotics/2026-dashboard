@@ -6,8 +6,8 @@ export async function fetchPitScoutingData(teams: number[]) {
   return await getDocs(query(collection(db, "teams"), where("teamID", "in", teams)));
 };
 
-function calcPct(value: number, total: number): number {
-  return total === 0 ? 0 : Math.round((value / total) * 100);
+function calcPct(value: number, total: number): string {
+  return `${total === 0 ? 0 : Math.round((value / total) * 100)}%`;
 }
 
 function calcAvg(value: number, total: number): number {
@@ -23,14 +23,7 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
     matches_played: count,
     on_field: calcPct(sum(m => m.on_field), count),
     rank_points: calcAvg(sum(m => m.rank_points), count),
-
-    start_position: `${calcPct(sum(m => m.start_position.left),   count)}% L ${calcPct(sum(m => m.start_position.middle), count)}% M ${calcPct(sum(m => m.start_position.right),  count)}% R`,
-    // {
-    //   middle: calcPct(sum(m => m.start_position.middle), count),
-    //   right:  calcPct(sum(m => m.start_position.right),  count),
-    //   left:   calcPct(sum(m => m.start_position.left),   count),
-    // },
-
+    start_position: [calcPct(sum(m => m.start_position.left), count), calcPct(sum(m => m.start_position.middle), count), calcPct(sum(m => m.start_position.right),  count)],
     teleop: {
       // fuel_score:       calcAvg(sum(m => m.teleop.fuel_score),       count),
       snowblow_neutral1: calcPct(sum(m => m.teleop.snowblow_neutral1), count),
@@ -47,19 +40,8 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
 
     endgame: {
       // fuel_score: calcAvg(sum(m => m.endgame.fuel_score), count),
-      climb_level: `${calcPct(sum(m => m.endgame.climb_level.one),   count)}% L1 ${calcPct(sum(m => m.endgame.climb_level.two),   count)}% L2 ${calcPct(sum(m => m.endgame.climb_level.three), count)}% L3`,
-
-      // {
-      //   one:   calcPct(sum(m => m.endgame.climb_level.one),   count),
-      //   two:   calcPct(sum(m => m.endgame.climb_level.two),   count),
-      //   three: calcPct(sum(m => m.endgame.climb_level.three), count),
-      // },
-      climb_location: `${calcPct(sum(m => m.endgame.climb_location.left),   count)}% L ${calcPct(sum(m => m.endgame.climb_location.middle), count)}% M ${calcPct(sum(m => m.endgame.climb_location.right),  count)}% R`,
-      // {
-      //   middle: calcPct(sum(m => m.endgame.climb_location.middle), count),
-      //   right:  calcPct(sum(m => m.endgame.climb_location.right),  count),
-      //   left:   calcPct(sum(m => m.endgame.climb_location.left),   count),
-      // },
+      climb_level: [calcPct(sum(m => m.endgame.climb_location.left), count), calcPct(sum(m => m.endgame.climb_location.middle), count), calcPct(sum(m => m.endgame.climb_location.right),  count)],
+      climb_location: [calcPct(sum(m => m.endgame.climb_location.left), count), calcPct(sum(m => m.endgame.climb_location.middle), count), calcPct(sum(m => m.endgame.climb_location.right),  count)],
     },
 
     assessment: {
@@ -76,13 +58,7 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
       fuel_outpost: calcPct(sum(m => m.auto.fuel_outpost), count),
       fuel_neutral: calcPct(sum(m => m.auto.fuel_neutral), count),
       climb_score: calcAvg(sum(m => m.auto.climb)*10,      count),
-      climb_location: `${calcPct(sum(m => m.auto.climb_location.left),   count)}% L ${calcPct(sum(m => m.auto.climb_location.middle), count)}% M ${calcPct(sum(m => m.auto.climb_location.right),  count)}% R`,
-
-      // {
-      //   middle: calcPct(sum(m => m.auto.climb_location.middle), count),
-      //   right:  calcPct(sum(m => m.auto.climb_location.right),  count),
-      //   left:   calcPct(sum(m => m.auto.climb_location.left),   count),
-      // },
+      climb_location: [calcPct(sum(m => m.auto.climb_location.left), count), calcPct(sum(m => m.auto.climb_location.middle), count), calcPct(sum(m => m.auto.climb_location.right),  count)],
       // fuel_score: calcAvg(sum(m => m.auto.fuel_score), count),
     },
   };

@@ -163,45 +163,45 @@ export interface DashboardScoutingData {
 export interface ProcessedTeamData {
   teamID: number;
   matches_played: number;
-  on_field: number; // percentage
-  start_position: string; // "X% L, Y% M, Z% R"
+  on_field: string; // percentage
+  start_position: string[];
   rank_points: number; // average
   teleop: {
     // fuel_score: number; // average
-    snowblow_neutral1: number;
-    snowblow_neutral2: number;
-    snowblow_alliance: number;
-    out_of_bounds: number;
-    move_shoot: number;
-    bump: number;
-    trench: number;
+    snowblow_neutral1: string;
+    snowblow_neutral2: string;
+    snowblow_alliance: string;
+    out_of_bounds: string;
+    move_shoot: string;
+    bump: string;
+    trench: string;
     driver_skill: number; // average
     defense: number; // average
     speed: number; // average
   };
   endgame: {
     // fuel_score: number; // average
-    climb_level: string; // "X% 1, Y% 2, Z% 3"
+    climb_level: string[];
     // climb_score: number;
-    climb_location: string; // "X% L, Y% M, Z% R"
+    climb_location: string[];
   };
   assessment: {
-    died: number;
-    tipped: number;
-    fuel_spill: number;
-    stuck_fuel: number;
-    stuck_bump: number;
+    died: string;
+    tipped: string;
+    fuel_spill: string;
+    stuck_fuel: string;
+    stuck_bump: string;
   };
   auto: {
-    moved: number;
-    fuel_depot: number;
-    fuel_outpost: number;
-    fuel_neutral: number;
+    moved: string;
+    fuel_depot: string;
+    fuel_outpost: string;
+    fuel_neutral: string;
     climb_score: number;
-    climb_location: string; // "X% L, Y% M, Z% R"
+    climb_location: string[];
     // fuel_score: number; // average
   };
-  [key: string]: string | number | Record<string, string | number | boolean | string[]>;
+  [key: string]: string | number | string[] | Record<string, string | number | boolean | string[] | number[]>;
 }
 
 export interface TeamDataLabels {
