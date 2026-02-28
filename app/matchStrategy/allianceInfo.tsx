@@ -106,9 +106,9 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                   <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                     <div className="font-bold text-right">Start Position</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map(val => (<p key={val}>{val}</p>))}</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[1]].start_position).map(val => (<p key={val}>{val}</p>))}</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[2]].start_position).map(val => (<p key={val}>{val}</p>))}</div>
+                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[0]}-start_position-${val}`}>{val}</p>))}</div>
+                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[1]}-start_position-${val}`}>{val}</p>))}</div>
+                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[2]}-start_position-${val}`}>{val}</p>))}</div>
                   </div>
                 </div>
 
@@ -124,9 +124,9 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                       return (
                         <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                           <div className="font-bold text-right">{rowLabel}</div>
-                          <div>{Object.values(team1Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team2Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team3Val).map(val => (<p key={val}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
@@ -153,9 +153,9 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                       return (
                         <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                           <div className="font-bold text-right">{rowLabel}</div>
-                          <div>{Object.values(team1Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team2Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team3Val).map(val => (<p key={val}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
@@ -182,9 +182,9 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                       return (
                         <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                           <div className="font-bold text-right">{rowLabel}</div>
-                          <div>{Object.values(team1Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team2Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team3Val).map(val => (<p key={val}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
@@ -211,9 +211,9 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                       return (
                         <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                           <div className="font-bold text-right">{rowLabel}</div>
-                          <div>{Object.values(team1Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team2Val).map(val => (<p key={val}>{val}</p>))}</div>
-                          <div>{Object.values(team3Val).map(val => (<p key={val}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }

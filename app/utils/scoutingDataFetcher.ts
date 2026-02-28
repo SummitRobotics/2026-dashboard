@@ -23,7 +23,7 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
     matches_played: count,
     on_field: calcPct(sum(m => m.on_field), count),
     rank_points: calcAvg(sum(m => m.rank_points), count),
-    start_position: [calcPct(sum(m => m.start_position.left), count), calcPct(sum(m => m.start_position.middle), count), calcPct(sum(m => m.start_position.right),  count)],
+    start_position: [`${calcPct(sum(m => m.start_position.left), count)} L`, `${calcPct(sum(m => m.start_position.middle), count)} M`, `${calcPct(sum(m => m.start_position.right),  count)} R`],
     teleop: {
       // fuel_score:       calcAvg(sum(m => m.teleop.fuel_score),       count),
       snowblow_neutral1: calcPct(sum(m => m.teleop.snowblow_neutral1), count),
@@ -40,8 +40,8 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
 
     endgame: {
       // fuel_score: calcAvg(sum(m => m.endgame.fuel_score), count),
-      climb_level: [calcPct(sum(m => m.endgame.climb_location.left), count), calcPct(sum(m => m.endgame.climb_location.middle), count), calcPct(sum(m => m.endgame.climb_location.right),  count)],
-      climb_location: [calcPct(sum(m => m.endgame.climb_location.left), count), calcPct(sum(m => m.endgame.climb_location.middle), count), calcPct(sum(m => m.endgame.climb_location.right),  count)],
+      climb_level: [`${calcPct(sum(m => m.endgame.climb_location.left), count)} L1`, `${calcPct(sum(m => m.endgame.climb_location.middle), count)} L2`, `${calcPct(sum(m => m.endgame.climb_location.right),  count)} L3`],
+      climb_location: [`${calcPct(sum(m => m.endgame.climb_location.left), count)} L`, `${calcPct(sum(m => m.endgame.climb_location.middle), count)} M`, `${calcPct(sum(m => m.endgame.climb_location.right),  count)} R`],
     },
 
     assessment: {
@@ -58,7 +58,7 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
       fuel_outpost: calcPct(sum(m => m.auto.fuel_outpost), count),
       fuel_neutral: calcPct(sum(m => m.auto.fuel_neutral), count),
       climb_score: calcAvg(sum(m => m.auto.climb)*10,      count),
-      climb_location: [calcPct(sum(m => m.auto.climb_location.left), count), calcPct(sum(m => m.auto.climb_location.middle), count), calcPct(sum(m => m.auto.climb_location.right),  count)],
+      climb_location: [`${calcPct(sum(m => m.auto.climb_location.left), count)} L`, `${calcPct(sum(m => m.auto.climb_location.middle), count)} M`, `${calcPct(sum(m => m.auto.climb_location.right),  count)} R`],
       // fuel_score: calcAvg(sum(m => m.auto.fuel_score), count),
     },
   };
