@@ -14,16 +14,30 @@ function calcAvg(value: number, total: number): number {
   return total === 0 ? 0 : Math.round((value / total) * 10) / 10;
 }
 
+
 function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamData {
   const count = matches.length;
-  const sum = (fn: (m: DashboardScoutingData) => number | boolean) =>
-    matches.reduce((acc, m) => acc + (fn(m) ? 1 : 0), 0);
+
+  // For Numeric or Boolean values **NOT STRINGS**
+  // Use Array.filter() for strings -- see start_position for an example
+  const sum = (fn: (m: DashboardScoutingData) => number | boolean) => {
+    return matches.reduce((acc, m) => {
+      const v = fn(m);
+      if (typeof v === "number") {
+        // treat as numeric
+        return acc + v;
+      }
+      // treat boolean as a 0/1 count
+      return acc + (v ? 1 : 0);
+    }, 0);
+  };
+
   return {
     teamID: matches[0].teamID,
     matches_played: count,
     on_field: calcPct(sum(m => m.on_field), count),
     rank_points: calcAvg(sum(m => m.rank_points), count),
-    start_position: [`${calcPct(sum(m => m.start_position.left), count)} L`, `${calcPct(sum(m => m.start_position.middle), count)} M`, `${calcPct(sum(m => m.start_position.right),  count)} R`],
+    start_position: [`${calcPct(matches.filter(m => m.start_position === 'left').length, count)} L`, `${calcPct(matches.filter(m => m.start_position === 'middle').length, count)} M`, `${calcPct(matches.filter(m => m.start_position === 'right').length, count)} R`],
     teleop: {
       // fuel_score:       calcAvg(sum(m => m.teleop.fuel_score),       count),
       snowblow_neutral1: calcPct(sum(m => m.teleop.snowblow_neutral1), count),
@@ -40,8 +54,8 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
 
     endgame: {
       // fuel_score: calcAvg(sum(m => m.endgame.fuel_score), count),
-      climb_level: [`${calcPct(sum(m => m.endgame.climb_location.left), count)} L1`, `${calcPct(sum(m => m.endgame.climb_location.middle), count)} L2`, `${calcPct(sum(m => m.endgame.climb_location.right),  count)} L3`],
-      climb_location: [`${calcPct(sum(m => m.endgame.climb_location.left), count)} L`, `${calcPct(sum(m => m.endgame.climb_location.middle), count)} M`, `${calcPct(sum(m => m.endgame.climb_location.right),  count)} R`],
+      climb_level: [`${calcPct(matches.filter(m => m.endgame.climb_level === 1).length, count)} L1`, `${calcPct(matches.filter(m => m.endgame.climb_level === 2).length, count)} L2`, `${calcPct(matches.filter(m => m.endgame.climb_level === 3).length,  count)} L3`],
+      climb_location: [`${calcPct(matches.filter(m => m.endgame.climb_location === 'left').length, count)} L`, `${calcPct(matches.filter(m => m.endgame.climb_location === 'middle').length, count)} M`, `${calcPct(matches.filter(m => m.endgame.climb_location === 'right').length, count)} R`],
     },
 
     assessment: {
@@ -53,12 +67,13 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
     },
 
     auto: {
-      moved:      calcPct(sum(m => m.auto.moved),      count),
+      moved:      calcPct(sum(m => m.auto.moved), count),
       fuel_depot: calcPct(sum(m => m.auto.fuel_depot), count),
       fuel_outpost: calcPct(sum(m => m.auto.fuel_outpost), count),
       fuel_neutral: calcPct(sum(m => m.auto.fuel_neutral), count),
-      climb_score: calcAvg(sum(m => m.auto.climb)*10,      count),
-      climb_location: [`${calcPct(sum(m => m.auto.climb_location.left), count)} L`, `${calcPct(sum(m => m.auto.climb_location.middle), count)} M`, `${calcPct(sum(m => m.auto.climb_location.right),  count)} R`],
+      climb_score: calcAvg(sum(m => m.auto.climb)*10, count),
+      climb_failed: calcPct(sum(m => m.auto.climb_failed), count),
+      climb_location: [`${calcPct(matches.filter(m => m.auto.climb_location === 'left').length, count)} L`, `${calcPct(matches.filter(m => m.auto.climb_location === 'middle').length, count)} M`, `${calcPct(matches.filter(m => m.auto.climb_location === 'right').length, count)} R`],
       // fuel_score: calcAvg(sum(m => m.auto.fuel_score), count),
     },
   };
@@ -69,6 +84,6 @@ export async function fetchMatchScoutingData(teams: number[]): Promise<Processed
   const matches: DashboardScoutingData[] = snapshot.docs.map(doc => doc.data() as DashboardScoutingData);
 
   const groupedByTeam = Map.groupBy(matches, (match) => match.teamID);
-  console.log(groupedByTeam.values());
+
   return Array.from(groupedByTeam.values()).map(aggregateTeamMatches);
 }

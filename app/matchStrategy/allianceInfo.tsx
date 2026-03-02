@@ -39,6 +39,7 @@ const labels = {
     fuel_outpost: 'Fuel From Outpost',
     fuel_neutral: 'Fuel From Neutral',
     climb_score: 'Climb Score',
+    climb_failed: 'Climb Failed',
     climb_location: 'Climb Location',
   }
 } as TeamDataLabels;
@@ -82,7 +83,7 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                       setActiveTeam(pitScoutingData![team]);
                     }}>
                       <strong className="font-bold">{team}</strong><br />
-                      Matches: {matchScoutingData![team].matches_played}
+                      Matches: {(matchScoutingData![team] && matchScoutingData![team].matches_played) | 0}
                     </div>
                   ))}
                 </div>
@@ -92,47 +93,47 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                   <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                     <div className="font-bold text-right">On Field</div>
-                    <div>{matchScoutingData![alliance.teams[0]].on_field}</div>
-                    <div>{matchScoutingData![alliance.teams[1]].on_field}</div>
-                    <div>{matchScoutingData![alliance.teams[2]].on_field}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].on_field : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].on_field : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].on_field : 'N/A'}</div>
                   </div>
 
                   <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                     <div className="font-bold text-right">Avg. RP</div>
-                    <div>{matchScoutingData![alliance.teams[0]].rank_points}</div>
-                    <div>{matchScoutingData![alliance.teams[1]].rank_points}</div>
-                    <div>{matchScoutingData![alliance.teams[2]].rank_points}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].rank_points : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].rank_points : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].rank_points : 'N/A'}</div>
                   </div>
 
-                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                     <div className="font-bold text-right">Start Position</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[0]}-start_position-${val}`}>{val}</p>))}</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[1]}-start_position-${val}`}>{val}</p>))}</div>
-                    <div>{Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[2]}-start_position-${val}`}>{val}</p>))}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[0]]) ? Object.values(matchScoutingData![alliance.teams[0]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[0]}-start_position-${val}`}>{val}</p>)) : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[1]]) ? Object.values(matchScoutingData![alliance.teams[1]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[1]}-start_position-${val}`}>{val}</p>)) : 'N/A'}</div>
+                    <div>{(!!matchScoutingData![alliance.teams[2]]) ? Object.values(matchScoutingData![alliance.teams[2]].start_position).map((val, idx) => (<p key={`start-${idx}-${alliance.teams[2]}-start_position-${val}`}>{val}</p>)) : 'N/A'}</div>
                   </div>
                 </div>
 
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Auto</h4>
-                  {Object.keys(matchScoutingData![alliance.teams[0]].auto).map((key) => {
+                  {Object.keys(labels.auto).map((key) => {
                     const rowLabel = labels.auto[key].toString();
-                    const team1Val = matchScoutingData![alliance.teams[0]].auto[key as keyof ProcessedTeamData['auto']];
-                    const team2Val = matchScoutingData![alliance.teams[1]].auto[key as keyof ProcessedTeamData['auto']];
-                    const team3Val = matchScoutingData![alliance.teams[2]].auto[key as keyof ProcessedTeamData['auto']];
+                    const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].auto[key as keyof ProcessedTeamData['auto']] : ['N/A'];
+                    const team2Val = (!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].auto[key as keyof ProcessedTeamData['auto']] : ['N/A'];
+                    const team3Val = (!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].auto[key as keyof ProcessedTeamData['auto']] : ['N/A'];
 
                     if(key === 'climb_location' || key === 'climb_level' || key === 'start_position') {
                       return (
-                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                           <div className="font-bold text-right">{rowLabel}</div>
                           <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team2Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team3Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
 
                     return (
-                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
                         <div>{team1Val}</div>
                         <div>{team2Val}</div>
@@ -143,25 +144,25 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 </div>
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Teleop</h4>
-                  {Object.keys(matchScoutingData![alliance.teams[0]].teleop).map((key) => {
+                  {Object.keys(labels.teleop).map((key) => {
                     const rowLabel = labels.teleop[key].toString();
-                    const team1Val = matchScoutingData![alliance.teams[0]].teleop[key as keyof ProcessedTeamData['teleop']];
-                    const team2Val = matchScoutingData![alliance.teams[1]].teleop[key as keyof ProcessedTeamData['teleop']];
-                    const team3Val = matchScoutingData![alliance.teams[2]].teleop[key as keyof ProcessedTeamData['teleop']];
+                    const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
+                    const team2Val = (!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
+                    const team3Val = (!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
 
                     if(key === 'climb_location' || key === 'climb_level' || key === 'start_position') {
                       return (
-                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                           <div className="font-bold text-right">{rowLabel}</div>
                           <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team2Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team3Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
 
                     return (
-                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
                         <div>{team1Val}</div>
                         <div>{team2Val}</div>
@@ -172,25 +173,25 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 </div>
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Endgame</h4>
-                  {Object.keys(matchScoutingData![alliance.teams[0]].endgame).map((key) => {
+                  {Object.keys(labels.endgame).map((key) => {
                     const rowLabel = labels.endgame[key].toString();
-                    const team1Val = matchScoutingData![alliance.teams[0]].endgame[key as keyof ProcessedTeamData['endgame']];
-                    const team2Val = matchScoutingData![alliance.teams[1]].endgame[key as keyof ProcessedTeamData['endgame']];
-                    const team3Val = matchScoutingData![alliance.teams[2]].endgame[key as keyof ProcessedTeamData['endgame']];
+                    const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].endgame[key as keyof ProcessedTeamData['endgame']] : ['N/A'];
+                    const team2Val = (!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].endgame[key as keyof ProcessedTeamData['endgame']] : ['N/A'];
+                    const team3Val = (!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].endgame[key as keyof ProcessedTeamData['endgame']] : ['N/A'];
 
                     if(key === 'climb_location' || key === 'climb_level' || key === 'start_position') {
                       return (
-                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                           <div className="font-bold text-right">{rowLabel}</div>
                           <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team2Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team3Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
 
                     return (
-                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
                         <div>{team1Val}</div>
                         <div>{team2Val}</div>
@@ -201,25 +202,25 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 </div>
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Match Assessments</h4>
-                  {Object.keys(matchScoutingData![alliance.teams[0]].assessment).map((key) => {
+                  {Object.keys(labels.assessment).map((key) => {
                     const rowLabel = labels.assessment[key].toString();
-                    const team1Val = matchScoutingData![alliance.teams[0]].assessment[key as keyof ProcessedTeamData['assessment']];
-                    const team2Val = matchScoutingData![alliance.teams[1]].assessment[key as keyof ProcessedTeamData['assessment']];
-                    const team3Val = matchScoutingData![alliance.teams[2]].assessment[key as keyof ProcessedTeamData['assessment']];
+                    const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].assessment[key as keyof ProcessedTeamData['assessment']] : ['N/A'];
+                    const team2Val = (!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].assessment[key as keyof ProcessedTeamData['assessment']] : ['N/A'];
+                    const team3Val = (!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].assessment[key as keyof ProcessedTeamData['assessment']] : ['N/A'];
 
                     if(key === 'climb_location' || key === 'climb_level' || key === 'start_position') {
                       return (
-                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                        <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                           <div className="font-bold text-right">{rowLabel}</div>
                           <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[0]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
-                          <div>{Object.values(team1Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team2Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[1]}-${val}`}>{val}</p>))}</div>
+                          <div>{Object.values(team3Val).map((val, idx) => (<p key={`${key}-${idx}-${alliance.teams[2]}-${val}`}>{val}</p>))}</div>
                         </div>
                       );
                     }
 
                     return (
-                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                      <div key={`label-auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
                         <div>{team1Val}</div>
                         <div>{team2Val}</div>

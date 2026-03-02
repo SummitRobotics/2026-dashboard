@@ -106,11 +106,7 @@ export interface PitScoutingData {
 export interface DashboardScoutingData {
   teamID: number;
   on_field: boolean;
-  start_position: {
-    middle: boolean;
-    right: boolean;
-    left: boolean;
-  };
+  start_position: string;
   rank_points: number;
   teleop: {
     fuel_score: number;
@@ -127,16 +123,8 @@ export interface DashboardScoutingData {
   };
   endgame: {
     fuel_score: number;
-    climb_level: {
-      one: boolean;
-      two: boolean;
-      three: boolean;
-    };
-    climb_location: {
-      middle: boolean;
-      right: boolean;
-      left: boolean;
-    };
+    climb_level: number;
+    climb_location: string;
   };
   assessment: {
     died: boolean;
@@ -151,11 +139,8 @@ export interface DashboardScoutingData {
     fuel_outpost: boolean;
     fuel_neutral: boolean;
     climb: boolean;
-    climb_location: {
-      middle: boolean;
-      right: boolean;
-      left: boolean;
-    };
+    climb_failed: boolean;
+    climb_location: string;
     fuel_score: number;
   };
 }
@@ -199,6 +184,7 @@ export interface ProcessedTeamData {
     fuel_neutral: string;
     climb_score: number;
     climb_location: string[];
+    climb_failed: string;
     // fuel_score: number; // average
   };
   [key: string]: string | number | string[] | Record<string, string | number | boolean | string[] | number[]>;
