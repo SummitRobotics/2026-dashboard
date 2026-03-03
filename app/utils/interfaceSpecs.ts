@@ -217,7 +217,7 @@ export interface ProcessedTeamData {
   [key: string]: string | number | string[] | Record<string, string | number | boolean | string[] | number[]>;
 }
 
-export interface TeamDataLabels {
+export interface MatchDataLabels {
   teamID: string;
   matches_played: string;
   on_field: string;
@@ -259,4 +259,35 @@ export interface TeamDataLabels {
     [key: string]: string | number;
   },
   [key: string]: string | number | Record<string, string | number | boolean | string[]>;
+}
+
+export interface PitScoutingLabels {
+  width: string;
+  length:  string;
+  height:  string;
+  weight:  string;
+  intake_type: string;
+  shooter_type: string;
+  shooter_count:  string;
+  auto_aim:  string;
+  auto_score_count:  string;
+  move_shoot:  string;
+  outpost_feed:  string;
+  outpost_receive:  string;
+  climb_endgame:  string;
+  climb_auto:  string;
+  drive_type: string;
+  nav_bump:  string;
+  nav_trench:  string;
+  hopper_capacity:  string;
+  quality: string;
+  electrical_quality: string;
+  electrical_ports_taped:  string;
+  electrical_battery_protected:  string;
+  eletrical_loose_wiring:  string;
+  pit_condition: string;
+  notes: string;
+  // teamID: number | string;
+  // teamName: string;
+  [key: string]: string | number;
 }

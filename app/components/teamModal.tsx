@@ -1,33 +1,66 @@
-import { PitScoutingData } from "@/app/utils/interfaceSpecs";
+import { PitScoutingData, PitScoutingLabels } from "@/app/utils/interfaceSpecs";
 import Modal from "./modal";
 
+const PitScoutingDataLabels = {
+  width: 'Width',
+  length:  'Length',
+  height:  'Height',
+  weight:  'Weight',
+  intake_type: 'Intake Type',
+  shooter_type: 'Shooter Type',
+  shooter_count:  'Shooter Count',
+  auto_aim:  'Can Auto Aim',
+  auto_score_count:  'Anticipated Auto Score',
+  move_shoot:  'Can Move While Shooting',
+  outpost_feed:  'Can Feed Outpost',
+  outpost_receive:  'Can Receive From Outpost',
+  climb_endgame:  'Can Climb in EndGame',
+  climb_auto:  'Can Climb in Auto',
+  drive_type: 'Drive Type',
+  nav_bump:  'Can Navigate Bump',
+  nav_trench:  'Can Navigate Trench',
+  hopper_capacity:  'Hopper Capacity',
+  quality: 'Overall Build Quality Rating',
+  shooter_quality: 'Shooter Quality',
+  intake_quality: 'Intake Quality',
+  climb_quality: 'Climb Quality',
+  electrical_quality: 'Electrical Quality',
+  electrical_ports_taped:  'Has Taped Electrical Ports',
+  electrical_battery_protected:  'Has Protected Batter',
+  eletrical_loose_wiring:  'Has Loose Wiring',
+  pit_condition: 'Pit Condition',
+  notes: 'General Notes',
+  // teamID: 'Team ID',
+  // teamName: 'Team Name',
+} as PitScoutingLabels;
+
 export default function TeamModal({ isOpen, onCancel, onConfirm, teamData }: { isOpen: boolean; onCancel: () => void; onConfirm: () => void; teamData: PitScoutingData }) {
-  if (!teamData) {
+  if (!teamData || Object.keys(teamData).length === 1 && teamData.teamID) {
     return (
       <Modal isOpen={isOpen} onCancel={onCancel} onConfirm={onConfirm}>
-        <div className="min-w-2xl">
-          <h2 className="text-center text-2xl">No Team Selected</h2>
+        <div>
+          <h2 className="text-center text-2xl">No Pit Scouting Data for Selected Team</h2>
         </div>
       </Modal>
     );
   }
 
   return (
-    <Modal isOpen={isOpen} onCancel={onCancel} onConfirm={onConfirm}>
-      <div className="min-w-2xl h-full overflow-hidden">
-        <h2 className="text-center text-2xl">Team {teamData.teamID}</h2>
-        <h3 className="ext-lg text-center">{teamData.teamName}</h3>
+    <Modal isOpen={isOpen} onCancel={onCancel} onConfirm={onConfirm} classes="w-1/2">
+      <div className="h-full overflow-hidden">
+        <h2 className="text-center text-2xl">Pit Scouting Data</h2>
+        <h3 className="text-lg text-center">{teamData.teamID} {teamData.teamName}</h3>
 
-        <div className="mt-4">Photos</div>
+        {/* <div className="mt-4">Photos</div> */}
 
-        <h3 className="text-lg mt-4">Pit Scouting Data</h3>
-        <div className="h-96 overflow-y-auto">
-          {Object.keys(teamData).map((key) => (
-            <div key={key} className="flex justify-between border-b py-2">
-              <span className="font-bold">{key}</span>
+        <h3 className="text-xl mt-6"></h3>
+        <div className="w-full h-96 overflow-y-auto justify-self-center">
+          {Object.keys(PitScoutingDataLabels).map((key) => (
+            <div key={key} className="flex justify-between border-b border-chaos-950 py-3">
+              <span className="">{PitScoutingDataLabels[key]}</span>
               <span>{teamData[key as keyof PitScoutingData]}</span>
             </div>
-        ))}
+          ))}
         </div>
       </div>
     </Modal>
