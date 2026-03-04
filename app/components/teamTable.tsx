@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { COMP_ID } from './constants';
 import getCompData from './getComp';
-import { fetchMatchScoutingData } from "../utils/scoutingDataFetcher";
+
 interface TeamData {
   teamNumber: number;
   teamName: string;
@@ -89,10 +89,10 @@ export default async function EventPage({
       <tbody>
         {sortedTeams.map((team) => (
           <tr key={team.teamNumber}>
-            <td className="p-3 border border-slate-800 font-bold font-mono">{team.teamNumber}</td>
+            <td className="p-3 border border-slate-800 font-bold font-mono"><Link href={`teams/${team.teamNumber}`}>{team.teamNumber}</Link></td>
             <td className="p-3 border border-slate-800 text-orange-400 font-mono">
               <div className="w-60 overflow-x-auto whitespace-nowrap scrollbar-hide">
-                {team.teamName}
+                <Link href={`teams/${team.teamNumber}`}>{team.teamName}</Link>
               </div>
             </td>
             <td className="p-3 border border-slate-800 text-purple-400 font-mono">{team.epa.toFixed(1)}</td>

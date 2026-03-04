@@ -1,7 +1,7 @@
 'use client';
 import { useState } from "react";
 import "./allianceInfo.css";
-import { Match, PitScoutingData, ProcessedTeamData, TeamDataLabels } from "@/app/utils/interfaceSpecs";
+import { Match, PitScoutingData, ProcessedTeamData, MatchDataLabels } from "@/app/utils/interfaceSpecs";
 import TeamModal from "../components/teamModal";
 
 const labels = {
@@ -42,7 +42,7 @@ const labels = {
     climb_failed: 'Climb Failed',
     climb_location: 'Climb Location',
   }
-} as TeamDataLabels;
+} as MatchDataLabels;
 
 export default function AllianceInfo({ matchData, pitScoutingData, matchScoutingData }: { matchData: Match | null, pitScoutingData: Record<string, PitScoutingData> | null, matchScoutingData: Record<string, ProcessedTeamData> | null}) {
   const [activeTeam, setActiveTeam] = useState<PitScoutingData>({});
