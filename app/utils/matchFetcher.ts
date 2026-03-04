@@ -1,19 +1,18 @@
 import { Match, Alliance } from "@/app/utils/interfaceSpecs";
+import { COMP_ID, TBA_KEY} from '@/app/components/constants';
 
-const TBA_KEY = 'FN7w2wiUQRTFhBXOKjdITttYSz5bXNmc40hLb0DFimSY34GkZu9KfH8DTCyfGCrI';
 
-
-export async function fetchEventMatches(eventKey: string): Promise<Match[]> {
-  const year = eventKey.substring(0, 4);
+export async function fetchEventMatches(): Promise<Match[]> {
+  const year = COMP_ID.substring(0, 4);
   try {
     const [matchesRes, oprRes, statRes] = await Promise.all([
-      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches/simple`, {
+      fetch(`https://www.thebluealliance.com/api/v3/event/${COMP_ID}/matches/simple`, {
         headers: { 'X-TBA-Auth-Key': TBA_KEY },
       }),
-      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/oprs`, {
+      fetch(`https://www.thebluealliance.com/api/v3/event/${COMP_ID}/oprs`, {
         headers: { 'X-TBA-Auth-Key': TBA_KEY },
       }),
-      fetch(`https://api.statbotics.io/v3/team_events?event=${eventKey}&year=${year}`, {
+      fetch(`https://api.statbotics.io/v3/team_events?event=${COMP_ID}&year=${year}`, {
         headers: { 'accept': 'application/json' }
       })
     ]);
@@ -23,7 +22,7 @@ export async function fetchEventMatches(eventKey: string): Promise<Match[]> {
     const statData = await statRes.json();
 
     const oprs = oprData.oprs || {};
-
+    console.log(statData);
     const statMap = new Map<number, { epa: number, sd: number }>();
     if (Array.isArray(statData)) {
       statData.forEach((t: any) => {
