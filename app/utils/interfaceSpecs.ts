@@ -182,7 +182,7 @@ export interface ProcessedTeamData {
     fuel_depot: string;
     fuel_outpost: string;
     fuel_neutral: string;
-    climb_score: number;
+    climb: string;
     climb_location: string[];
     climb_failed: string;
     // fuel_score: number; // average
@@ -227,7 +227,7 @@ export interface TeamDataLabels {
     fuel_depot: string;
     fuel_outpost: string;
     fuel_neutral: string;
-    climb_score: string;
+    climb: string;
     climb_location: string;
     [key: string]: string | number;
   },

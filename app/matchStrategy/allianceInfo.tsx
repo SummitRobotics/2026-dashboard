@@ -38,7 +38,7 @@ const labels = {
     fuel_depot: 'Fuel From Depot',
     fuel_outpost: 'Fuel From Outpost',
     fuel_neutral: 'Fuel From Neutral',
-    climb_score: 'Climb Score',
+    climb: 'Attempted Climb',
     climb_failed: 'Climb Failed',
     climb_location: 'Climb Location',
   }

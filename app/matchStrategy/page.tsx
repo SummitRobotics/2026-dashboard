@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
 import { fetchEventMatches } from "@/app/utils/matchFetcher";
 import { fetchPitScoutingData, fetchMatchScoutingData } from "@/app/utils/scoutingDataFetcher";
+import getCompData from '@/app/components/getComp';
 import { Match, PitScoutingData, ProcessedTeamData } from "@/app/utils/interfaceSpecs";
-import { COMP_ID } from '@/app/components/constants';
 
 export default function MatchStrategy() {
   const [matchList, setMatchList] = useState<Match[]>([]);
@@ -16,7 +16,7 @@ export default function MatchStrategy() {
   useEffect(() => {
     async function loadMatchData() {
       setIsLoading(true);
-      const data = await fetchEventMatches(COMP_ID);
+      const data = await fetchEventMatches();
       setMatchList(data);
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
@@ -43,6 +43,8 @@ export default function MatchStrategy() {
         .then(data => {
           setPitScoutingData(data);
         });
+
+        await getCompData();
       }
       setIsLoading(false);
     }

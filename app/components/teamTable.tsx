@@ -17,7 +17,7 @@ export default async function EventPage({
 }: {
   searchParams?: { sort?: string; order?: string };
 }) {
-  const teams = await getCompData(COMP_ID);
+  const teams = await getCompData();
 
   const params = await searchParams || {};
   const sortKey = (params.sort || 'epa') as keyof TeamData;
