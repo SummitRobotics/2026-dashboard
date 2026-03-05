@@ -3,8 +3,19 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { DashboardScoutingData, ProcessedTeamData } from "./interfaceSpecs";
 
 export async function fetchPitScoutingData(teams: number[]) {
-  return await getDocs(query(collection(db, "teams"), where("teamID", "in", teams)));
-};
+  const chunks: number[][] = [];
+  for (let i = 0; i < teams.length; i += 30) chunks.push(teams.slice(i, i + 30));
+
+  const snapshots = await Promise.all(
+    chunks.map(chunk =>
+      getDocs(query(collection(db, "teams"), where("teamID", "in", chunk)))
+    )
+  );
+
+  // Merge all snapshot docs into a single snapshot-like object
+  const docs = snapshots.flatMap(s => s.docs);
+  return { docs };
+}
 
 function calcPct(value: number, total: number): string {
   return `${total === 0 ? 0 : Math.round((value / total) * 100)}%`;
@@ -80,10 +91,19 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
 }
 
 export async function fetchMatchScoutingData(teams: number[]): Promise<ProcessedTeamData[]> {
-  const snapshot = await getDocs(query(collection(db, "matches"), where("teamID", "in", teams)));
-  const matches: DashboardScoutingData[] = snapshot.docs.map(doc => doc.data() as DashboardScoutingData);
+  const chunks: number[][] = [];
+  for (let i = 0; i < teams.length; i += 30) chunks.push(teams.slice(i, i + 30));
+
+  const snapshots = await Promise.all(
+    chunks.map(chunk =>
+      getDocs(query(collection(db, "matches"), where("teamID", "in", chunk)))
+    )
+  );
+
+  const matches: DashboardScoutingData[] = snapshots.flatMap(
+    snapshot => snapshot.docs.map(doc => doc.data() as DashboardScoutingData)
+  );
 
   const groupedByTeam = Map.groupBy(matches, (match) => match.teamID);
-
   return Array.from(groupedByTeam.values()).map(aggregateTeamMatches);
 }
