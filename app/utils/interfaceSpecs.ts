@@ -89,14 +89,14 @@ interface LevelData {
 }
 
 export interface MatchScoutingData {
-  teamID: number;
-  on_field: number;
-  start_position: PositionData;
-  rank_points: number;
-  teleop: MatchScoutingTeleopData;
-  endgame: MatchScoutingEndgameData;
-  assessment: MatchScoutingAssessmentData;
-  auto: MatchScoutingAutoData;
+  teamID?: number;
+  on_field?: number;
+  start_position?: PositionData;
+  rank_points?: number;
+  teleop?: MatchScoutingTeleopData;
+  endgame?: MatchScoutingEndgameData;
+  assessment?: MatchScoutingAssessmentData;
+  auto?: MatchScoutingAutoData;
 }
 
 export interface PitScoutingData {

@@ -1,0 +1,8 @@
+.info-wrap {
+  padding: 2px;
+  background-image: linear-gradient(to bottom right, var(--color-chaos-800), var(--color-chaos-900));
+
+  .info {
+    background-image: linear-gradient(to top left, var(--color-black) 20%, var(--color-chaos-900));
+  }
+}

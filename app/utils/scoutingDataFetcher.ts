@@ -92,14 +92,15 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
 
 export async function fetchMatchScoutingData(teams: number[]): Promise<ProcessedTeamData[]> {
   const chunks: number[][] = [];
-  for (let i = 0; i < teams.length; i += 30) chunks.push(teams.slice(i, i + 30));
+  for (let i = 0; i < teams.length; i += 30) {
+    chunks.push(teams.slice(i, i + 30));
+  }
 
   const snapshots = await Promise.all(
-    chunks.map(chunk =>
-      getDocs(query(collection(db, "matches"), where("teamID", "in", chunk)))
-    )
+    chunks.map(chunk =>{
+      return getDocs(query(collection(db, "matches"), where("teamID", "in", chunk)));
+    })
   );
-
   const matches: DashboardScoutingData[] = snapshots.flatMap(
     snapshot => snapshot.docs.map(doc => doc.data() as DashboardScoutingData)
   );
