@@ -1,3 +1,5 @@
+import { COMP_ID } from "./constants";
+
 interface TeamData {
   teamNumber: number;
   teamName: string;
@@ -9,19 +11,19 @@ interface TeamData {
   rank: number;
 }
 
-export default async function getCompData(eventKey: string): Promise<TeamData[]> {
+export default async function getCompData(): Promise<TeamData[]> {
   const tbaKey = 'FN7w2wiUQRTFhBXOKjdITttYSz5bXNmc40hLb0DFimSY34GkZu9KfH8DTCyfGCrI';
-  const year = eventKey.substring(0, 4);
+  const year = COMP_ID.substring(0, 4);
 
   try {
-    const tbaRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/oprs`, {
+    const tbaRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${COMP_ID}/oprs`, {
       headers: { 'X-TBA-Auth-Key': tbaKey },
     });
     const tbaData = await tbaRes.json();
     const oprs = tbaData.oprs || {};
 
     const statRes = await fetch(
-      `https://api.statbotics.io/v3/team_events?year=${year}&event=${eventKey}`,
+      `https://api.statbotics.io/v3/team_events?year=${year}&event=${COMP_ID}`,
       { headers: { 'accept': 'application/json' } }
     );
 

@@ -82,7 +82,7 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
       fuel_depot: calcPct(sum(m => m.auto.fuel_depot), count),
       fuel_outpost: calcPct(sum(m => m.auto.fuel_outpost), count),
       fuel_neutral: calcPct(sum(m => m.auto.fuel_neutral), count),
-      climb_score: calcAvg(sum(m => m.auto.climb)*10, count),
+      climb: calcPct(sum(m => m.auto.climb), count),
       climb_failed: calcPct(sum(m => m.auto.climb_failed), count),
       climb_location: [`${calcPct(matches.filter(m => m.auto.climb_location === 'left').length, count)} L`, `${calcPct(matches.filter(m => m.auto.climb_location === 'middle').length, count)} M`, `${calcPct(matches.filter(m => m.auto.climb_location === 'right').length, count)} R`],
       // fuel_score: calcAvg(sum(m => m.auto.fuel_score), count),

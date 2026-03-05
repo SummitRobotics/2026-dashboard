@@ -1,6 +1,6 @@
 import getCompData from "../components/getComp";
 import { COMP_ID } from "../components/constants";
-import { db } from "../components/firebase"; 
+import { db } from "../components/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 interface TeamData {
@@ -14,7 +14,7 @@ interface TeamData {
   rank: number;
 }
 
-const teams: TeamData[] = await getCompData(COMP_ID);
+const teams: TeamData[] = await getCompData();
 
 function SelectGenerator({
     location,
@@ -72,9 +72,9 @@ export default function AllianceBuilder() {
                     <div key={rowNum} className="w-3/4 h-40 border border-white content-center">
                         <div className="flex justify-evenly h-10">
                             {[1, 2, 3, 4].map((colNum) => (
-                                <SelectGenerator 
-                                    key={`${rowNum}-${colNum}`} 
-                                    location={{ row: rowNum, column: colNum }} 
+                                <SelectGenerator
+                                    key={`${rowNum}-${colNum}`}
+                                    location={{ row: rowNum, column: colNum }}
                                 />
                             ))}
                         </div>
