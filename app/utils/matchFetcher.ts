@@ -20,15 +20,15 @@ export async function fetchEventMatches(): Promise<Match[]> {
     const matchesRaw = await matchesRes.json();
     const oprData = await oprRes.json();
     const statData = await statRes.json();
-
     const oprs = oprData.oprs || {};
-    console.log(statData);
-    const statMap = new Map<number, { epa: number, sd: number }>();
+    const statMap = new Map<number, { epa: number, sd: number, breakdown: Alliance['epaBreakdown'] }>();
+
     if (Array.isArray(statData)) {
       statData.forEach((t: any) => {
         statMap.set(t.team, {
           epa: t.epa?.breakdown?.total_points || 0,
-          sd: t.epa?.total_points?.sd || 0
+          sd: t.epa?.total_points?.sd || 0,
+          breakdown: t.epa?.breakdown || {}
         });
       });
     }
@@ -43,7 +43,6 @@ export async function fetchEventMatches(): Promise<Match[]> {
             return isQual && hasTeam;
       })
       .map((m: any) => {
-
         const processAlliance = (color: 'red' | 'blue'): Alliance => {
           const teamKeys: string[] = m.alliances[color].team_keys;
           const teams = teamKeys.map(k => parseInt(k.replace('frc', '')));
@@ -51,14 +50,19 @@ export async function fetchEventMatches(): Promise<Match[]> {
           let totalEPA = 0;
           let varianceSum = 0;
           let totalOPR = 0;
+          const epaBreakdown = {} as Alliance['epaBreakdown'];
 
           teams.forEach(team => {
             const stats = statMap.get(team);
+
             if (stats) {
               totalEPA += stats.epa;
               varianceSum += (stats.sd * stats.sd);
             }
+
             totalOPR += (oprs[`frc${team}`] || 0);
+
+            epaBreakdown[team] = stats?.breakdown || {};
           });
 
           return {
@@ -66,7 +70,8 @@ export async function fetchEventMatches(): Promise<Match[]> {
             teams,
             OPR: parseFloat(totalOPR.toFixed(1)),
             EPA: parseFloat(totalEPA.toFixed(1)),
-            epaSD: parseFloat(Math.sqrt(varianceSum).toFixed(1))
+            epaSD: parseFloat(Math.sqrt(varianceSum).toFixed(1)),
+            epaBreakdown
           };
         };
 

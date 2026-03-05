@@ -1,9 +1,36 @@
+interface EPAbreakdown {
+  total_points?: number;
+  auto_points?: number;
+  teleop_points?: number;
+  endgame_points?: number;
+  energized_rp?: number;
+  supercharged_rp?: number;
+  traversal_rp?: number;
+  tiebreaker_points?: number;
+  auto_fuel?: number;
+  auto_tower?: number;
+  transition_fuel?: number;
+  first_shift_fuel?: number;
+  second_shift_fuel?: number;
+  teleop_fuel?: number;
+  endgame_fuel?: number;
+  endgame_tower?: number;
+  total_fuel?: number;
+  total_tower?: number;
+  rp_1?: number;
+  rp_2?: number;
+  rp_3?: number;
+}
+
 export interface Alliance {
   color: string;
   teams: number[];
   OPR: number;
   EPA: number;
   epaSD: number;
+  epaBreakdown: {
+    [key:number]: EPAbreakdown
+  }
 }
 
 export interface Match {

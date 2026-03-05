@@ -60,7 +60,6 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
     a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
   );
 
-  console.log(matchScoutingData);
   return (
     <div className="alliance-info">
       <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-4 mt-2 p-4">
@@ -77,11 +76,12 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 <div className="grid grid-cols-4 gap-2 mt-2 px-6 m-2 text-center">
                   <h4 className="text-lg font-bold text-center col-start-2 col-span-3">Teams</h4>
                   <div>{/* Needed for grid alignment */}</div>
-                  {alliance.teams.map((team) => (
+                  {alliance.teams.map((team, idx) => (
                     <div key={`team-${team}`} onClick={() => {
                       if(!pitScoutingData) return;
                       setActiveTeam(pitScoutingData![team]);
                     }}>
+                      <strong className="font-bold capitalize">{alliance.color} {idx+1}</strong><br />
                       <strong className="font-bold">{team}</strong><br />
                       Matches: {(matchScoutingData![team] && matchScoutingData![team].matches_played) | 0}
                     </div>
@@ -90,6 +90,13 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">General</h4>
+
+                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                    <div className="font-bold text-right">Total EPA</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[0]].total_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[1]].total_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[2]].total_points : 'N/A'}</div>
+                  </div>
 
                   <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
                     <div className="font-bold text-right">On Field</div>
@@ -115,6 +122,14 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Auto</h4>
+
+                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                    <div className="font-bold text-right">Auto EPA</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[0]].auto_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[1]].auto_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[2]].auto_points : 'N/A'}</div>
+                  </div>
+
                   {Object.keys(labels.auto).map((key) => {
                     const rowLabel = labels.auto[key].toString();
                     const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].auto[key as keyof ProcessedTeamData['auto']] : ['N/A'];
@@ -144,6 +159,14 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 </div>
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Teleop</h4>
+
+                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                    <div className="font-bold text-right">Teleop EPA</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[0]].teleop_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[1]].teleop_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[2]].teleop_points : 'N/A'}</div>
+                  </div>
+
                   {Object.keys(labels.teleop).map((key) => {
                     const rowLabel = labels.teleop[key].toString();
                     const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
@@ -173,6 +196,14 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 </div>
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Endgame</h4>
+
+                  <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center">
+                    <div className="font-bold text-right">Endgame EPA</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[0]].endgame_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[1]].endgame_points : 'N/A'}</div>
+                    <div>{(!!alliance!.epaBreakdown![alliance.teams[0]]) ? alliance!.epaBreakdown![alliance.teams[2]].endgame_points : 'N/A'}</div>
+                  </div>
+
                   {Object.keys(labels.endgame).map((key) => {
                     const rowLabel = labels.endgame[key].toString();
                     const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].endgame[key as keyof ProcessedTeamData['endgame']] : ['N/A'];
