@@ -29,12 +29,12 @@ export default function Header() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
 
-                <div className="hidden w-full md:flex md:items-center md:w-auto" id="menu">
-                    <ul className="pt-4 text-base md:flex md:justify-between md:pt-0">
+                <div className="hidden w-full md:block md:w-auto" id="menu">
+                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-4 md:flex-row md:space-x-4 md:space-y-0 md:mt-0 items-center">
                         {links.map((link) => {
                             const isActive = pathname === link.href;
                             return (
-                                <li key={link.href} className="ml-2">
+                                <li key={link.href}>
                                     <Link
                                         href={link.href}
                                         className={`rounded-full py-2 px-4 text-black border-1 border-summit-grey-100 hover:border-chaos-300 [&.active]:border-chaos-300 bg-white hover:bg-chaos [&.active]:bg-chaos ${isActive ? 'active' : ''}`}
