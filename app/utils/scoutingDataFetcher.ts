@@ -3,18 +3,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { DashboardScoutingData, ProcessedTeamData } from "./interfaceSpecs";
 
 export async function fetchPitScoutingData(teams: number[]) {
-  const chunks: number[][] = [];
-  for (let i = 0; i < teams.length; i += 30) chunks.push(teams.slice(i, i + 30));
-
-  const snapshots = await Promise.all(
-    chunks.map(chunk =>
-      getDocs(query(collection(db, "teams"), where("teamID", "in", chunk)))
-    )
-  );
-
-  // Merge all snapshot docs into a single snapshot-like object
-  const docs = snapshots.flatMap(s => s.docs);
-  return { docs };
+  return await getDocs(query(collection(db, "teams"), where("teamID", "in", teams)));
 }
 
 function calcPct(value: number, total: number): string {

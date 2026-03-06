@@ -34,7 +34,7 @@ export default function Header() {
                         {links.map((link) => {
                             const isActive = pathname === link.href;
                             return (
-                                <li key={link.href} className="ml-2">
+                                <li key={link.href}>
                                     <Link
                                         href={link.href}
                                         className={`inline-block rounded-full py-2 px-4 text-black border-1 border-summit-grey-100 hover:border-chaos-300 [&.active]:border-chaos-300 bg-white hover:bg-chaos [&.active]:bg-chaos ${isActive ? 'active' : ''}`}

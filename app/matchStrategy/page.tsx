@@ -10,47 +10,58 @@ export default function MatchStrategy() {
   const [matchList, setMatchList] = useState<Match[]>([]);
   const [selectedMatchNumber, setSelectedMatchNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [isScoutingLoading, setIsScoutingLoading] = useState(false);
   const [pitScoutingData, setPitScoutingData] = useState<Record<string, PitScoutingData> | null>(null);
   const [matchScoutingData, setMatchScoutingData] = useState<Record<string, ProcessedTeamData> | null>(null);
 
+  // Load match list once on mount
   useEffect(() => {
-    async function loadMatchData() {
+    async function loadMatchList() {
       setIsLoading(true);
       const data = await fetchEventMatches();
       setMatchList(data);
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
-        const teams = data[0].alliances.flatMap((a) => a.teams);
-
-        await fetchMatchScoutingData(teams)
-        .then(response => {
-          return response.reduce((acc, data) => {
-            acc[data.teamID] = data;
-            return acc;
-          }, {} as Record<string, ProcessedTeamData>);
-        })
-        .then(data => {
-          setMatchScoutingData(data);
-        });
-
-        await fetchPitScoutingData(teams)
-        .then(response => {
-          return response.docs.reduce((acc, doc) => {
-            acc[doc.id] = doc.data();
-            return acc;
-          }, {} as Record<string, PitScoutingData>);
-        })
-        .then(data => {
-          setPitScoutingData(data);
-        });
-
-        await getCompData();
       }
+      await getCompData();
       setIsLoading(false);
     }
-
-    loadMatchData();
+    loadMatchList();
   }, []);
+
+  // Re-fetch scouting data whenever selected match changes
+  useEffect(() => {
+    if (matchList.length === 0) return;
+
+    const selectedMatch = matchList.find((m) => m.matchNumber === selectedMatchNumber);
+    if (!selectedMatch) return;
+
+    async function loadScoutingData() {
+      setIsScoutingLoading(true);
+      const teams = selectedMatch!.alliances.flatMap((a) => a.teams);
+
+      const [matchScouting, pitScouting] = await Promise.all([
+        fetchMatchScoutingData(teams).then((response) =>
+          response.reduce((acc, data) => {
+            acc[data.teamID] = data;
+            return acc;
+          }, {} as Record<string, ProcessedTeamData>)
+        ),
+        fetchPitScoutingData(teams).then((response) =>
+          response.docs.reduce((acc, doc) => {
+            acc[doc.id] = doc.data();
+            return acc;
+          }, {} as Record<string, PitScoutingData>)
+        ),
+      ]);
+
+      setMatchScoutingData(matchScouting);
+      setPitScoutingData(pitScouting);
+      setIsScoutingLoading(false);
+    }
+
+    loadScoutingData();
+  }, [selectedMatchNumber, matchList]);
 
   const selectedMatch = matchList.find((m) => m.matchNumber === selectedMatchNumber) ?? null;
 
@@ -77,7 +88,11 @@ export default function MatchStrategy() {
           </nav>
 
           <div>
-            <AllianceInfo matchData={selectedMatch} pitScoutingData={pitScoutingData} matchScoutingData={matchScoutingData} />
+            {isScoutingLoading ? (
+              <div className="text-center mt-4">Loading scouting data...</div>
+            ) : (
+              <AllianceInfo matchData={selectedMatch} pitScoutingData={pitScoutingData} matchScoutingData={matchScoutingData} />
+            )}
           </div>
         </>
       )}
