@@ -104,6 +104,7 @@ export interface PitScoutingData {
   length?: number;
   height?: number;
   weight?: number;
+  photos?: string[];
   intake_type?: string;
   shooter_type?: string;
   shooter_count?: number;

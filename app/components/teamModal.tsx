@@ -6,6 +6,7 @@ const PitScoutingDataLabels = {
   length:  'Length',
   height:  'Height',
   weight:  'Weight',
+  photos: 'Photos',
   intake_type: 'Intake Type',
   shooter_type: 'Shooter Type',
   shooter_count:  'Shooter Count',
@@ -34,6 +35,7 @@ const PitScoutingDataLabels = {
   // teamName: 'Team Name',
 } as PitScoutingLabels;
 
+
 export default function TeamModal({ isOpen, onCancel, onConfirm, teamData }: { isOpen: boolean; onCancel: () => void; onConfirm: () => void; teamData: PitScoutingData }) {
   if (!teamData || Object.keys(teamData).length === 1 && teamData.teamID) {
     return (
@@ -45,19 +47,37 @@ export default function TeamModal({ isOpen, onCancel, onConfirm, teamData }: { i
     );
   }
 
+  const { photos: teamPhotos } = teamData;
+  const { photos: photosLabel, ...cleanedLabels } = PitScoutingDataLabels;
+
+  console.log(typeof(teamPhotos));
+
   return (
     <Modal isOpen={isOpen} onCancel={onCancel} onConfirm={onConfirm} classes="w-1/2">
       <div className="h-full overflow-hidden">
         <h2 className="text-center text-2xl">Pit Scouting Data</h2>
         <h3 className="text-lg text-center">{teamData.teamID} {teamData.teamName}</h3>
 
-        {/* <div className="mt-4">Photos</div> */}
-
-        <h3 className="text-xl mt-6"></h3>
         <div className="w-full h-96 overflow-y-auto justify-self-center">
-          {Object.keys(PitScoutingDataLabels).map((key) => (
+          {(!!teamPhotos && teamPhotos.length > 0) ? (
+            <div className="mt-4">
+              <h3 className="capitalize">{photosLabel}</h3>
+              <div className="w-full overflow-x-auto">
+                <ul className="whitespace-nowrap">
+                  {
+                    teamPhotos.map((photoUrl, idx) => (
+                      <li className="inline-block w-64 px-2" key={idx}><img src={`${photoUrl}`} alt={`${teamData!.teamName} robot photo`} /></li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
+          ) : ''}
+
+          <h3 className="text-xl mt-6"></h3>
+          {Object.keys(cleanedLabels).map((key) => (
             <div key={key} className="flex justify-between border-b border-chaos-950 py-3">
-              <span className="">{PitScoutingDataLabels[key]}</span>
+              <span className="">{cleanedLabels[key]}</span>
               <span>{teamData[key as keyof PitScoutingData]}</span>
             </div>
           ))}
