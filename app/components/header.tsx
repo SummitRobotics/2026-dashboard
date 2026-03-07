@@ -10,6 +10,7 @@ export default function Header() {
         { name: 'Match Strategy', href: '/matchStrategy' },
         { name: 'Teams', href: '/teams' },
         { name: 'Alliance Builder', href: '/allianceBuilder' },
+        { name: 'Playoff Builder', href: '/playoffs' },
     ];
 
     function toggleNavMenu(){
