@@ -19,15 +19,9 @@ export default function MatchStrategy() {
   useEffect(() => {
     async function loadAlliances() {
       setIsLoading(true);
-      setIsEnriching(true);
-
-      const initial = await getPlayoffAlliances((enriched) => {
-        setAlliances(enriched);
-        setIsEnriching(false);
-      });
-
-      setAlliances(initial);
-      if (initial.length > 0) setSelectedAllianceNumber(initial[0].allianceNumber);
+      const data = await getPlayoffAlliances();
+      setAlliances(data);
+      if (data.length > 0) setSelectedAllianceNumber(data[0].allianceNumber);
       setIsLoading(false);
     }
     loadAlliances();
