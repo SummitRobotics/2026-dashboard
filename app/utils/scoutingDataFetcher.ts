@@ -97,3 +97,22 @@ export async function fetchMatchScoutingData(teams: number[]): Promise<Processed
   const groupedByTeam = Map.groupBy(matches, (match) => match.teamID);
   return Array.from(groupedByTeam.values()).map(aggregateTeamMatches);
 }
+
+export async function fetchPlayoffScoutingData(teams: number[]): Promise<ProcessedTeamData[]> {
+  const chunks: number[][] = [];
+  for (let i = 0; i < teams.length; i += 30) {
+    chunks.push(teams.slice(i, i + 30));
+  }
+
+  const snapshots = await Promise.all(
+    chunks.map(chunk =>{
+      return getDocs(query(collection(db, "matches"), where("teamID", "in", chunk)));
+    })
+  );
+  const matches: DashboardScoutingData[] = snapshots.flatMap(
+    snapshot => snapshot.docs.map(doc => doc.data() as DashboardScoutingData)
+  );
+
+  const groupedByTeam = Map.groupBy(matches, (match) => match.teamID);
+  return Array.from(groupedByTeam.values()).map(aggregateTeamMatches);
+}

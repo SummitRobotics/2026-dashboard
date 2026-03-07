@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import getCompData from "../components/getComp";
 import { COMP_ID } from "../components/constants";
 import { db } from "../components/firebase";
@@ -14,76 +16,83 @@ interface TeamData {
   rank: number;
 }
 
-const teams: TeamData[] = await getCompData();
+type AllianceGrid = string[][];
 
-function SelectGenerator({
-    location,
-}: {
-    location: { row: number; column: number }
-}) {
-    const sName = `row-${location.row}-col-${location.column}`;
-    return (
-        <select name={sName} id={sName} className="text-white p-1 rounded">
-            <option value="">Select Team</option>
-            {teams.map((team) => (
-                <option key={team.teamNumber} value={team.teamNumber}>
-                    {team.teamNumber}
-                </option>
-            ))}
-        </select>
-    );
-}
+const ROWS = 8;
+const COLS = 4;
+const emptyGrid = (): AllianceGrid =>
+  Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
 export default function AllianceBuilder() {
-    async function handleSubmit(formData: FormData) {
-        "use server";
+  const [teams, setTeams] = useState<TeamData[]>([]);
+  const [grid, setGrid] = useState<AllianceGrid>(emptyGrid());
+  const [status, setStatus] = useState<"idle" | "pushing" | "done" | "error">("idle");
 
-        const alliances = [];
+  useEffect(() => {
+    getCompData().then(setTeams);
+  }, []);
 
-        for (let r = 1; r <= 8; r++) {
-            const alliance = [
-                formData.get(`row-${r}-col-1`),
-                formData.get(`row-${r}-col-2`),
-                formData.get(`row-${r}-col-3`),
-                formData.get(`row-${r}-col-4`),
-            ];
-            alliances.push({
-                allianceNumber: r,
-                teams: alliance.filter(Boolean),
-                timestamp: new Date().toISOString()
-            });
-        }
+  function handleChange(row: number, col: number, value: string) {
+    setGrid((prev) => {
+      const next = prev.map((r) => [...r]);
+      next[row][col] = value;
+      return next;
+    });
+  }
 
-        try {
-            await addDoc(collection(db, "alliances"), {
-                compId: COMP_ID,
-                alliances: alliances,
-            });
-            console.log("pushed");
-        } catch (e) {
-            console.error("Error: ", e);
-        }
+  async function handleSubmit() {
+    setStatus("pushing");
+    const alliances = grid.map((row, i) => ({
+      allianceNumber: i + 1,
+      teams: row.filter(Boolean),
+      timestamp: new Date().toISOString(),
+    }));
+
+    try {
+      await addDoc(collection(db, "alliances"), {
+        compId: COMP_ID,
+        alliances,
+      });
+      setStatus("done");
+    } catch (e) {
+      console.error("Error: ", e);
+      setStatus("error");
     }
+  }
 
-    return (
-        <form action={handleSubmit}>
-            <div className="grid grid-rows-8 gap-1 p-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((rowNum) => (
-                    <div key={rowNum} className="w-3/4 h-40 border border-white content-center">
-                        <div className="flex justify-evenly h-10">
-                            {[1, 2, 3, 4].map((colNum) => (
-                                <SelectGenerator
-                                    key={`${rowNum}-${colNum}`}
-                                    location={{ row: rowNum, column: colNum }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ))}
+  return (
+    <div>
+      <div className="grid grid-rows-8 gap-1 p-4">
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((rowIdx) => (
+          <div key={rowIdx} className="w-3/4 h-40 border border-white content-center">
+            <div className="flex justify-evenly h-10">
+              {[0, 1, 2, 3].map((colIdx) => (
+                <select
+                  key={colIdx}
+                  value={grid[rowIdx][colIdx]}
+                  onChange={(e) => handleChange(rowIdx, colIdx, e.target.value)}
+                  className="text-white p-1 rounded"
+                >
+                  <option value="">Select Team</option>
+                  {teams.map((team) => (
+                    <option key={team.teamNumber} value={team.teamNumber}>
+                      {team.teamNumber}
+                    </option>
+                  ))}
+                </select>
+              ))}
             </div>
-            <button type="submit">
-                Push to Firebase
-            </button>
-        </form>
-    );
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={status === "pushing"}
+        className="mt-2 px-4 py-2 rounded"
+      >
+        {status === "pushing" ? "Pushing..." : status === "done" ? "Pushed!" : "Push to Firebase"}
+      </button>
+      {status === "error" && <p className="text-red-500 mt-2">Error pushing to Firebase.</p>}
+    </div>
+  );
 }
