@@ -11,6 +11,7 @@ interface TeamData {
   endEpa: number;
   opr: number;
   rank: number;
+  rps: number;
 }
 export default async function EventPage({
   searchParams,
@@ -31,7 +32,7 @@ export default async function EventPage({
   });
 
   const getSortUrl = (key: string) => {
-    const newOrder = sortKey === key ? (isAsc ? 'desc' : 'asc') : (key === 'teamName' || key === 'teamNumber' || key === 'rank' ? 'asc' : 'desc');
+    const newOrder = sortKey === key ? (isAsc ? 'desc' : 'asc') : (key === 'teamName' || key === 'teamNumber' || key === 'rank' ? 'asc' : 'desc' || key === 'rps' ? 'asc' : 'desc');
     return `?sort=${key}&order=${newOrder}`;
   };
 
@@ -80,8 +81,8 @@ export default async function EventPage({
             </Link>
           </th>
           <th className="p-3 border border-slate-800 text-left w-px whitespace-nowrap">
-            <Link href={getSortUrl('rank')} className="flex items-center gap-1">
-              Rank {sortKey === 'rank' ? (isAsc ? '▲' : '▼') : '↕'}
+            <Link href={getSortUrl('rps')} className="flex items-center gap-1">
+              RPs {sortKey === 'rps' ? (isAsc ? '▲' : '▼') : '↕'}
             </Link>
           </th>
         </tr>
@@ -101,6 +102,7 @@ export default async function EventPage({
             <td className="p-3 border border-slate-800 text-red-400 font-mono">{team.endEpa.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-pink-400 font-mono">{team.opr.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-yellow-400 font-mono">{team.rank}</td>
+            <td className="p-3 border border-slate-800 text-teal-400 font-mono">{team.rps}</td>
           </tr>
         ))}
       </tbody>
