@@ -9,6 +9,7 @@ interface TeamData {
   endEpa: number;
   opr: number;
   rank: number;
+  rps: number;
 }
 
 export default async function getCompData(): Promise<TeamData[]> {
@@ -39,7 +40,8 @@ export default async function getCompData(): Promise<TeamData[]> {
       teleEpa: entry.epa?.breakdown?.teleop_points ?? 0,
       endEpa: entry.epa?.breakdown?.endgame_points ?? 0,
       opr: oprs[`frc${entry.team}`] ?? 0,
-      rank: entry.record?.qual?.rank ?? 0
+      rank: entry.record?.qual?.rank ?? 0,
+      rps: entry.record?.qual?.rps ?? 0
     }));
 
     return combined;
