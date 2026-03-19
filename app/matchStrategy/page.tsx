@@ -1,9 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AllianceInfo from "./allianceInfo";
-import { fetchEventMatches } from "@/app/utils/matchFetcher";
+import { /*fetchEventMatches,*/ getCachedEventMatches } from "@/app/utils/matchFetcher";
 import { fetchPitScoutingData, fetchMatchScoutingData } from "@/app/utils/scoutingDataFetcher";
-import getCompData from '@/app/components/getComp';
 import { Match, PitScoutingData, ProcessedTeamData } from "@/app/utils/interfaceSpecs";
 
 export default function MatchStrategy() {
@@ -18,13 +17,14 @@ export default function MatchStrategy() {
   useEffect(() => {
     async function loadMatchList() {
       setIsLoading(true);
-      const data = await fetchEventMatches();
+      // const data = await fetchEventMatches();
+      const data = await getCachedEventMatches();
       setMatchList(data);
       if (data.length > 0) {
         setSelectedMatchNumber(data[0].matchNumber);
       }
-      await getCompData();
-      setIsLoading(false);
+
+      //setIsLoading(false);
     }
     loadMatchList();
   }, []);
@@ -58,6 +58,7 @@ export default function MatchStrategy() {
       setMatchScoutingData(matchScouting);
       setPitScoutingData(pitScouting);
       setIsScoutingLoading(false);
+      setIsLoading(false);
     }
 
     loadScoutingData();

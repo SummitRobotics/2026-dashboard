@@ -292,3 +292,14 @@ export interface PitScoutingLabels {
   // teamName: string;
   [key: string]: string | number;
 }
+
+export interface CachedEventData {
+  matches?: Match[];
+  OPRs?: {
+    [key: number]: number
+  },
+  lastUpdated?: number,
+  statbotics?: {
+    [key: number]: Record<string, string | number | boolean | string[]>;
+  };
+}

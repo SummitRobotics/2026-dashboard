@@ -1,3 +1,6 @@
+import { db } from "../components/firebase";
+import { doc, getDoc } from "firebase/firestore";
+
 import { Match, Alliance } from "@/app/utils/interfaceSpecs";
 import { COMP_ID, TBA_KEY} from '@/app/components/constants';
 
@@ -83,8 +86,78 @@ export async function fetchEventMatches(): Promise<Match[]> {
       .sort((a: any, b: any) => a.matchNumber - b.matchNumber);
 
     return formattedMatches;
-
   } catch (error) {
+    console.error("Error fetching match data:", error);
+    return [];
+  }
+}
+
+
+export async function getCachedEventMatches(): Promise<Match[]> {
+  try {
+    const eventsRef = doc(db, 'events', COMP_ID);
+    const eventSnapshot = await getDoc(eventsRef);
+
+    if (!eventSnapshot.exists()) {
+      return [];
+    }
+
+    const eventData = eventSnapshot.data();
+    const matchesRaw = eventData.matches;
+    const oprData = eventData.OPRs;
+    const statData = eventData.statbotics;
+
+    const formattedMatches: Match[] = matchesRaw
+        .filter((m: any) => {
+              const isQual = m.comp_level === 'qm';
+              const hasTeam =
+                  m.alliances.blue.team_keys.includes('frc5468') ||
+                  m.alliances.red.team_keys.includes('frc5468');
+
+              return isQual && hasTeam;
+        })
+        .map((m: any) => {
+          const processAlliance = (color: 'red' | 'blue'): Alliance => {
+            const teamKeys: string[] = m.alliances[color].team_keys;
+            const teams = teamKeys.map(k => parseInt(k.replace('frc', '')));
+
+            let totalEPA = 0;
+            let varianceSum = 0;
+            let totalOPR = 0;
+            const epaBreakdown = {} as Alliance['epaBreakdown'];
+
+            teams.forEach(team => {
+              const stats = statData[team];
+
+              if (stats) {
+                totalEPA += stats.epa;
+                varianceSum += (stats.sd * stats.sd);
+              }
+
+              totalOPR += (oprData[team] || 0);
+
+              epaBreakdown[team] = stats?.breakdown || {};
+            });
+
+            return {
+              color,
+              teams,
+              OPR: parseFloat(totalOPR.toFixed(1)),
+              EPA: parseFloat(totalEPA.toFixed(1)),
+              epaSD: parseFloat(Math.sqrt(varianceSum).toFixed(1)),
+              epaBreakdown
+            };
+          };
+
+          return {
+            matchNumber: m.match_number,
+            alliances: [processAlliance('blue'), processAlliance('red')]
+          };
+        })
+        .sort((a: any, b: any) => a.matchNumber - b.matchNumber);
+
+      return formattedMatches;
+  } catch(error) {
     console.error("Error fetching match data:", error);
     return [];
   }

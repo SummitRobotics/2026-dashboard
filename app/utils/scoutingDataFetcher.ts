@@ -1,4 +1,4 @@
-import { db} from "../components/firebase";
+import { db } from "../components/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { DashboardScoutingData, ProcessedTeamData } from "./interfaceSpecs";
 
