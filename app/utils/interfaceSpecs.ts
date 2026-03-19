@@ -303,3 +303,15 @@ export interface CachedEventData {
     [key: number]: Record<string, string | number | boolean | string[]>;
   };
 }
+
+export interface TeamEventData {
+  teamNumber: number;
+  teamName: string;
+  epa: number;
+  autoEpa: number;
+  teleEpa: number;
+  endEpa: number;
+  opr: number;
+  rank: number;
+  rps: number;
+}
