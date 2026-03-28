@@ -57,7 +57,7 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
     );
   }
   const sortedAlliances = [...matchData.alliances].sort((a, b) =>
-    a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
+    a.teams.includes(1540) ? -1 : b.teams.includes(1540) ? 1 : 0
   );
 
   return (
