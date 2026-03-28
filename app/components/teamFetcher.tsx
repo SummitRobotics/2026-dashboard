@@ -29,7 +29,7 @@ async function getNextMatch(teamNumber: string): Promise<MatchData | null> {
 }
 
 export default async function Teamtable() {
-  const targetTeam = '5468';
+  const targetTeam = '1540';
   const match = await getNextMatch(targetTeam);
 
   if (!match) return <div className="m-5 text-white">No upcoming matches found.</div>;
