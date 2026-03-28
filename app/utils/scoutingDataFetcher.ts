@@ -1,6 +1,7 @@
 import { db } from "../components/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { DashboardScoutingData, ProcessedTeamData } from "./interfaceSpecs";
+import { COMP_ID } from "../components/constants";
 
 export async function fetchPitScoutingData(teams: number[]) {
   return await getDocs(query(collection(db, "teams"), where("teamID", "in", teams)));
@@ -79,7 +80,11 @@ function aggregateTeamMatches(matches: DashboardScoutingData[]): ProcessedTeamDa
   };
 }
 
-export async function fetchMatchScoutingData(teams: number[]): Promise<ProcessedTeamData[]> {
+function getQuery(qType: string, chunk: number[]) {
+  return (qType === 'historical') ? query(collection(db, "matches"), where("teamID", "in", chunk)) : query(collection(db, "matches"), where("teamID", "in", chunk), where("eventID", "==", COMP_ID));
+};
+
+export async function fetchMatchScoutingData(teams: number[], qType: string): Promise<ProcessedTeamData[]> {
   const chunks: number[][] = [];
   for (let i = 0; i < teams.length; i += 30) {
     chunks.push(teams.slice(i, i + 30));
@@ -87,7 +92,7 @@ export async function fetchMatchScoutingData(teams: number[]): Promise<Processed
 
   const snapshots = await Promise.all(
     chunks.map(chunk =>{
-      return getDocs(query(collection(db, "matches"), where("teamID", "in", chunk)));
+      return getDocs(getQuery(qType, chunk));
     })
   );
   const matches: DashboardScoutingData[] = snapshots.flatMap(
