@@ -96,13 +96,13 @@ export default async function EventPage({
                 <Link href={`teams/${team.teamNumber}`}>{team.teamName}</Link>
               </div>
             </td>
-            <td className="p-3 border border-slate-800 text-purple-400 font-mono">{team.epa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-purple-400 font-mono bg-slate-900">{team.epa.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-green-400 font-mono">{team.autoEpa.toFixed(1)}</td>
-            <td className="p-3 border border-slate-800 text-blue-400 font-mono">{team.teleEpa.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-blue-400 font-mono bg-slate-900">{team.teleEpa.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-red-400 font-mono">{team.endEpa.toFixed(1)}</td>
-            <td className="p-3 border border-slate-800 text-pink-400 font-mono">{team.opr.toFixed(1)}</td>
+            <td className="p-3 border border-slate-800 text-pink-400 font-mono bg-slate-900">{team.opr.toFixed(1)}</td>
             <td className="p-3 border border-slate-800 text-yellow-400 font-mono">{team.rank}</td>
-            <td className="p-3 border border-slate-800 text-teal-400 font-mono">{team.rps}</td>
+            <td className="p-3 border border-slate-800 text-teal-400 font-mono bg-slate-900">{team.rps}</td>
           </tr>
         ))}
       </tbody>
