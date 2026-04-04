@@ -111,8 +111,6 @@ export interface PitScoutingData {
   auto_aim?: boolean;
   auto_score_count?: number;
   move_shoot?: boolean;
-  outpost_feed?: boolean;
-  outpost_receive?: boolean;
   climb_endgame?: boolean;
   climb_auto?: boolean;
   drive_type?: string;
@@ -273,8 +271,6 @@ export interface PitScoutingLabels {
   auto_aim:  string;
   auto_score_count:  string;
   move_shoot:  string;
-  outpost_feed:  string;
-  outpost_receive:  string;
   climb_endgame:  string;
   climb_auto:  string;
   drive_type: string;
