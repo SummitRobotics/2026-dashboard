@@ -57,7 +57,7 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
     );
   }
   const sortedAlliances = [...matchData.alliances].sort((a, b) =>
-    a.teams.includes(1540) ? -1 : b.teams.includes(1540) ? 1 : 0
+    a.teams.includes(5468) ? -1 : b.teams.includes(5468) ? 1 : 0
   );
 
   return (
@@ -90,13 +90,13 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                 <div className="info p-3 rounded-lg m-2">
                   <h4 className="text-xl text-center">Important</h4>
-                  
+
                   {(['driver_skill', 'defense', 'speed'] as const).map((key) => {
                     const rowLabel = labels.teleop[key].toString();
                     const team1Val = (!!matchScoutingData![alliance.teams[0]]) ? matchScoutingData![alliance.teams[0]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
                     const team2Val = (!!matchScoutingData![alliance.teams[1]]) ? matchScoutingData![alliance.teams[1]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
                     const team3Val = (!!matchScoutingData![alliance.teams[2]]) ? matchScoutingData![alliance.teams[2]].teleop[key as keyof ProcessedTeamData['teleop']] : ['N/A'];
- 
+
                     return (
                       <div key={`label-special-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
