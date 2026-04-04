@@ -17,14 +17,6 @@ export default async function Page({ params }: {
     console.log('fetchPitScoutingData failed');
   }) as PitScoutingData;
 
-  const teamMatchScoutingData = await fetchMatchScoutingData([Number(teamID)])
-  .then(response => {
-    return response.reduce((acc, data) => {
-      acc[data.teamID] = data;
-      return acc;
-    }, {} as Record<string, ProcessedTeamData>);
-  });
-
   const eventStats = await getCachedEventStats()
   .then(response => {
     return response.filter(teamData => {
@@ -48,7 +40,7 @@ export default async function Page({ params }: {
 
 
       <h2 className="text-center text-2xl p-3 mt-6">Aggregate Match Scouting</h2>
-      <TeamMatchScouting matchScoutingData={teamMatchScoutingData} teamID={Number(teamID)} eventStats={eventStats}/>
+      <TeamMatchScouting teamID={Number(teamID)} eventStats={eventStats} />
     </div>
   );
 }
