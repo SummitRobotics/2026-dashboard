@@ -10,10 +10,10 @@ interface MatchData {
 
 async function getNextMatch(teamNumber: string): Promise<MatchData | null> {
   const apiKey = 'FN7w2wiUQRTFhBXOKjdITttYSz5bXNmc40hLb0DFimSY34GkZu9KfH8DTCyfGCrI';
-  const year = 2025; 
-  
+  const year = 2025;
+
   const res = await fetch(
-    `https://www.thebluealliance.com/api/v3/team/frc${teamNumber}/matches/${year}/simple`, 
+    `https://www.thebluealliance.com/api/v3/team/frc${teamNumber}/matches/${year}/simple`,
     {
       headers: { 'X-TBA-Auth-Key': apiKey },
       next: { revalidate: 60 }
@@ -29,7 +29,7 @@ async function getNextMatch(teamNumber: string): Promise<MatchData | null> {
 }
 
 export default async function Teamtable() {
-  const targetTeam = '1540';
+  const targetTeam = '5468';
   const match = await getNextMatch(targetTeam);
 
   if (!match) return <div className="m-5 text-white">No upcoming matches found.</div>;
@@ -67,8 +67,8 @@ function TeamRow({ teamKey, target, alliance }: { teamKey: string; target: strin
 
   return (
     <div className={`text-center py-2 px-4 rounded-md font-black text-xl transition-all ${
-      isTarget 
-        ? 'bg-black/40 text-white/90' 
+      isTarget
+        ? 'bg-black/40 text-white/90'
         : 'bg-black/20 text-white/90 border border-white/10'
     }`}>
       {num}

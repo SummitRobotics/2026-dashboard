@@ -40,8 +40,8 @@ export async function fetchEventMatches(): Promise<Match[]> {
       .filter((m: any) => {
             const isQual = m.comp_level === 'qm';
             const hasTeam =
-                m.alliances.blue.team_keys.includes('frc1540') ||
-                m.alliances.red.team_keys.includes('frc1540');
+                m.alliances.blue.team_keys.includes('frc5468') ||
+                m.alliances.red.team_keys.includes('frc5468');
 
             return isQual && hasTeam;
       })
@@ -111,8 +111,8 @@ export async function getCachedEventMatches(): Promise<Match[]> {
         .filter((m: any) => {
               const isQual = m.comp_level === 'qm';
               const hasTeam =
-                  m.alliances.blue.team_keys.includes('frc1540') ||
-                  m.alliances.red.team_keys.includes('frc1540');
+                  m.alliances.blue.team_keys.includes('frc5468') ||
+                  m.alliances.red.team_keys.includes('frc5468');
 
               return isQual && hasTeam;
         })
