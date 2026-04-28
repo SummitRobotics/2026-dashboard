@@ -87,7 +87,7 @@ export default function PhotoUpload() {
     <div className="min-h-screen bg-black p-8">
       <div className="max-w-2xl mx-auto">
 
-        <div className="bg-gray-900 rounded-lg p-6 shadow-lg">
+        <div className="bg-gray-900 p-6 shadow-lg">
           <div className="mb-6">
             <label htmlFor="teamNumber" className="block text-sm font-medium text-gray-300 mb-2">
               Team Number
