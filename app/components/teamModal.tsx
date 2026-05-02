@@ -50,8 +50,6 @@ export default function TeamModal({ isOpen, onCancel, onConfirm, teamData }: { i
   const { photos: teamPhotos } = teamData;
   const { photos: photosLabel, ...cleanedLabels } = PitScoutingDataLabels;
 
-  console.log(typeof(teamPhotos));
-
   return (
     <Modal isOpen={isOpen} onCancel={onCancel} onConfirm={onConfirm} classes="w-1/2">
       <div className="h-full overflow-hidden">
