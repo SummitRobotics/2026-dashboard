@@ -26,12 +26,12 @@ export default function Header() {
                     Chaos Theory
                 </h1>
 
-                <svg xmlns="http://www.w3.org/2000/svg" id="menu-button" onClick={toggleNavMenu} className="h-6 w-6 cursor-pointer md:hidden block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" id="menu-button" onClick={toggleNavMenu} className="h-6 w-6 cursor-pointer block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
 
-                <div className="hidden w-full md:block md:w-auto" id="menu">
-                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-4 md:flex-row md:space-x-4 md:space-y-0 md:mt-0 items-center">
+                <div className="hidden w-full" id="menu">
+                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-4 items-center">
                         {links.map((link) => {
                             const isActive = pathname === link.href;
                             return (

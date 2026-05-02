@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { act, useState } from "react";
 import "./allianceInfo.css";
 import { Match, PitScoutingData, ProcessedTeamData, MatchDataLabels } from "@/app/utils/interfaceSpecs";
 import TeamModal from "../components/teamModal";
@@ -57,7 +57,23 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
   pitScoutingData: Record<string, PitScoutingData> | null;
   matchScoutingData: Record<string, ProcessedTeamData> | null;
 }) {
-  const [activeTeam, setActiveTeam] = useState<PitScoutingData>({});
+  const [teamDetailModal, setTeamDetailModal] = useState<PitScoutingData>({});
+  const allianceTeams = matchData ? matchData.alliances.reduce((acc: Record<string, number[]>, alliance) => {
+    acc[alliance.color] = alliance.teams.slice(0, 3); // Only take first 3 teams
+    return acc;
+  }, {}) : {};
+
+  const [activeTeams, setActiveTeams] = useState({
+    red: allianceTeams.red || [],
+    blue: allianceTeams.blue || []
+  });
+
+  function onChooseTeam(allianceColor: string, team: number, arrIdx: number) {
+    setActiveTeams({
+      ...activeTeams,
+      [allianceColor]: activeTeams[allianceColor as keyof typeof activeTeams].with(arrIdx, team),
+    });
+  }
 
   if (!matchData) {
     return (
@@ -74,12 +90,32 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
     <div className="alliance-info">
       <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-4 mt-2 p-4">
         {sortedAlliances.map((alliance) => {
-          const [t1, t2, t3] = alliance.teams.slice(0, 3);
+          const [t1, t2, t3] = activeTeams[alliance.color as keyof typeof activeTeams];
 
           return (
             <div key={alliance.color} className={`${alliance.color}-alliance-wrap rounded-lg`}>
               <div className="p-3 alliance rounded-lg">
                 <h3 className="text-xl text-center">{alliance.color.toUpperCase()} Alliance</h3>
+
+                <div className="alliance-stats border-b-2 p-2">
+                  <h4 className="text-lg font-bold text-center col-start-2 col-span-3">Set Active Teams</h4>
+                  <div className="grid grid-cols-4 gap-2 mt-2 px-6 m-2 text-center">
+                    <div>{/* grid alignment */}</div>
+
+                    {activeTeams[alliance.color as keyof typeof activeTeams].map((team:number, idx:number) => (
+                      <div key={`${alliance.color}-${team}`}>
+                        <label className="block">Team {idx + 1}</label>
+                        <select value={team} onChange={(e) => { onChooseTeam(alliance.color, Number(e.target.value), idx);}}>
+                          <option value={alliance.teams[0]}>{alliance.teams[0]}</option>
+                          <option value={alliance.teams[1]}>{alliance.teams[1]}</option>
+                          <option value={alliance.teams[2]}>{alliance.teams[2]}</option>
+                          <option value={alliance.teams[3]}>{alliance.teams[3]}</option>
+                        </select>
+                      </div>
+                    ))}
+                    </div>
+                </div>
+
 
                 <div className="alliance-stats border-b-2 p-2">
                   <p>OPR: {alliance.OPR}</p>
@@ -89,10 +125,10 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                 <div className="grid grid-cols-4 gap-2 mt-2 px-6 m-2 text-center">
                   <h4 className="text-lg font-bold text-center col-start-2 col-span-3">Teams</h4>
                   <div>{/* grid alignment */}</div>
-                  {alliance.teams.slice(0, 3).map((team, idx) => (
+                  {activeTeams[alliance.color as keyof typeof activeTeams].map((team:number, idx:number) => (
                     <div key={`team-${team}`} onClick={() => {
                       if (!pitScoutingData) return;
-                      setActiveTeam(pitScoutingData?.[team] ?? {});
+                      setTeamDetailModal(pitScoutingData?.[team] ?? {});
                     }}>
                       <strong className="font-bold capitalize">{alliance.color} {idx + 1}</strong><br />
                       <strong className="font-bold">{team}</strong><br />
@@ -128,8 +164,8 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
 
                   <div className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                     <div className="font-bold text-right">Start Position</div>
-                    {[t1, t2, t3].map((team) => (
-                      <div key={`start-${team}`}>
+                    {[t1, t2, t3].map((team, i) => (
+                      <div key={`start-${team}-${i}`}>
                         {ms(matchScoutingData, team)?.start_position?.map((val, idx) => (
                           <p key={`start-${idx}-${team}-${val}`}>{val}</p>
                         )) ?? 'N/A'}
@@ -149,14 +185,14 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
                     <div>{epa(alliance, t3)?.auto_points ?? 'N/A'}</div>
                   </div>
 
-                  {Object.keys(labels.auto).map((key) => {
+                  {Object.keys(labels.auto).map((key, index) => {
                     const rowLabel = labels.auto[key].toString();
                     const vals = [t1, t2, t3].map((team) =>
                       ms(matchScoutingData, team)?.auto[key as keyof ProcessedTeamData['auto']] ?? 'N/A'
                     );
                     const isArray = key === 'climb_location';
                     return (
-                      <div key={`auto-${key}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
+                      <div key={`auto-${key}-${index}`} className="stat grid grid-cols-4 gap-2 mt-2 p-2 text-center items-center min-h-[72px]">
                         <div className="font-bold text-right">{rowLabel}</div>
                         {vals.map((val, i) => (
                           <div key={`auto-${key}-${alliance.teams[i]}`}>
@@ -255,10 +291,10 @@ export default function AllianceInfo({ matchData, pitScoutingData, matchScouting
         })}
       </div>
       <TeamModal
-        isOpen={activeTeam && Object.keys(activeTeam).length !== 0}
-        onCancel={() => setActiveTeam({})}
+        isOpen={teamDetailModal && Object.keys(teamDetailModal).length !== 0}
+        onCancel={() => setTeamDetailModal({})}
         onConfirm={() => {}}
-        teamData={activeTeam}
+        teamData={teamDetailModal}
       />
     </div>
   );
